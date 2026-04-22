@@ -509,6 +509,96 @@ const quizQuestions = [
   }
 ];
 
+const actionPlans = {
+  Healthcare: {
+    watch: "Watch a day-in-the-life video from a doctor, nurse, pharmacist, or therapist.",
+    try: "Take a first aid course, read a simple medical case, or volunteer in a health-related setting.",
+    join: "Join a biology club, health science club, hospital volunteer program, or mental health awareness group.",
+    learn: "Start with biology basics, human body systems, patient communication, and medical ethics."
+  },
+  Aviation: {
+    watch: "Watch cockpit procedure videos, flight simulator tutorials, or aviation safety explainers.",
+    try: "Use a flight simulator and practice following a checklist from takeoff to landing.",
+    join: "Join an aviation camp, airport tour, model aircraft club, or school aviation group.",
+    learn: "Start with weather, navigation, aircraft controls, communication, and safety procedures."
+  },
+  Language: {
+    watch: "Watch translator interviews, subtitle comparison videos, or bilingual content breakdowns.",
+    try: "Translate a short article, song subtitle, or school announcement into another language.",
+    join: "Join a language exchange, bilingual club, writing club, or subtitle volunteer project.",
+    learn: "Build vocabulary, grammar accuracy, cultural context, editing, and research habits."
+  },
+  Engineering: {
+    watch: "Watch project breakdowns about bridges, rockets, medical devices, machines, or architecture.",
+    try: "Build a small model, sketch a design, use CAD, or test a simple engineering prototype.",
+    join: "Join robotics, physics club, engineering club, model rocket club, or design-build competitions.",
+    learn: "Start with physics, math, CAD, prototyping, problem solving, and technical documentation."
+  },
+  Technology: {
+    watch: "Watch beginner coding, data dashboard, or cybersecurity lab videos.",
+    try: "Build a small website, analyze a dataset, or complete a beginner security challenge.",
+    join: "Join a coding club, hackathon, data club, robotics team, or cybersecurity CTF group.",
+    learn: "Start with JavaScript or Python, debugging, data basics, logical thinking, and project building."
+  },
+  Design: {
+    watch: "Watch UX case studies, room makeover videos, Figma tutorials, or portfolio reviews.",
+    try: "Redesign an app screen, create a room mood board, or interview someone about a product problem.",
+    join: "Join art club, design club, yearbook, product design group, or a Figma community challenge.",
+    learn: "Start with visual hierarchy, user research, layout, color, prototyping, and feedback loops."
+  },
+  Business: {
+    watch: "Watch marketing campaign breakdowns, finance explainers, or startup pitch videos.",
+    try: "Track a small budget, run a mock campaign, or test a simple product idea with friends.",
+    join: "Join business club, DECA, student government, finance club, or entrepreneurship competitions.",
+    learn: "Start with communication, spreadsheets, customer research, budgeting, strategy, and presentation."
+  },
+  Law: {
+    watch: "Watch mock trial clips, legal case explainers, or debate strategy videos.",
+    try: "Analyze a current event from both sides and write a short argument with evidence.",
+    join: "Join debate club, mock trial, student government, Model UN, or public speaking groups.",
+    learn: "Start with reading comprehension, logic, argument structure, evidence, and public speaking."
+  },
+  Media: {
+    watch: "Watch creator breakdowns, journalism interviews, storytelling videos, or game design postmortems.",
+    try: "Make a short video, interview someone, write an article, or design a simple game level.",
+    join: "Join school newspaper, film club, media team, game jam, podcast club, or creative writing group.",
+    learn: "Start with storytelling, editing, audience understanding, interviewing, and consistent publishing."
+  },
+  Education: {
+    watch: "Watch teaching demos, tutoring strategies, or explainers about how people learn.",
+    try: "Tutor a younger student or make a study guide for a topic you understand well.",
+    join: "Join tutoring programs, youth mentoring, teaching assistant opportunities, or education clubs.",
+    learn: "Start with communication, lesson planning, patience, classroom skills, and learning psychology."
+  },
+  "Public Service": {
+    watch: "Watch social work, policing, emergency response, or community service day-in-the-life videos.",
+    try: "Volunteer at a community event, help organize a safety project, or support a local nonprofit.",
+    join: "Join service clubs, community volunteering, youth leadership, emergency response, or civic groups.",
+    learn: "Start with communication, ethics, conflict resolution, community needs, and emotional resilience."
+  },
+  Hospitality: {
+    watch: "Watch restaurant service, chef training, hotel operations, or customer experience videos.",
+    try: "Cook a menu for friends, help host an event, or observe how a hotel or restaurant handles guests.",
+    join: "Join culinary club, event planning, hospitality programs, customer service work, or food competitions.",
+    learn: "Start with service mindset, time management, teamwork, food safety, and guest communication."
+  }
+};
+
+const tagLabels = {
+  people: "喜歡與人互動",
+  independent: "能獨立專注",
+  creative: "偏創意發想",
+  analytical: "偏邏輯分析",
+  high_pressure: "可接受高壓",
+  low_pressure: "偏好低壓環境",
+  hands_on: "喜歡動手做",
+  planning: "喜歡規劃設計",
+  long_study: "能長期學習",
+  fast_change: "喜歡快速變化",
+  stable: "重視穩定",
+  risk: "願意冒險挑戰"
+};
+
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
@@ -525,12 +615,12 @@ export default function App() {
 
   const recommendedCareers = careersWithTags
     .map((career) => {
-      const score = career.tags.filter((tag) => userTags.includes(tag)).length;
-      return { ...career, score };
+      const matchedTags = career.tags.filter((tag) => userTags.includes(tag));
+      return { ...career, matchedTags, score: matchedTags.length };
     })
     .filter((career) => career.score > 0)
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
-    .slice(0, 5);
+    .slice(0, 3);
 
   const filteredCareers = careersWithTags.filter((career) => {
     const matchesCategory =
@@ -633,17 +723,57 @@ export default function App() {
             <div className="recommendations">
               <div>
                 <p className="eyebrow">Top Matches</p>
-                <h3>Top 5 careers that may fit you</h3>
+                <h3>Top 3 careers that may fit you</h3>
               </div>
               <div className="recommendation-grid">
-                {recommendedCareers.map((career) => (
+                {recommendedCareers.map((career, index) => (
                   <article className="recommendation-card" key={career.title}>
-                    <div>
+                    <div className="recommendation-topline">
+                      <p className="rank">#{index + 1}</p>
                       <p className="score">{career.score} tag matches</p>
+                    </div>
+
+                    <div>
                       <h4>{career.title}</h4>
                       <p>{categoryLabels[career.category]}</p>
                     </div>
-                    <p>{career.fit}</p>
+
+                    <div>
+                      <p className="recommendation-label">Why this matches you</p>
+                      <p>
+                        你的答案和這個職業的{" "}
+                        {career.matchedTags.map((tag) => tagLabels[tag] ?? tag).join("、")}{" "}
+                        特質有重疊。
+                      </p>
+                    </div>
+
+                    <div>
+                      <p className="recommendation-label">適合你的特質</p>
+                      <div className="traits compact">
+                        {career.traits.map((trait) => (
+                          <span key={trait}>{trait}</span>
+                        ))}
+                      </div>
+                    </div>
+
+                    <div>
+                      <p className="recommendation-label">What may be hard for you</p>
+                      <p>{career.avoid}</p>
+                    </div>
+
+                    <div>
+                      <p className="recommendation-label">What to try this month</p>
+                      <p>{career.explore}</p>
+                    </div>
+
+                    <div className="action-list">
+                      {Object.entries(actionPlans[career.category] ?? {}).map(([label, text]) => (
+                        <div className="action-item" key={label}>
+                          <span>{label}</span>
+                          <p>{text}</p>
+                        </div>
+                      ))}
+                    </div>
                   </article>
                 ))}
               </div>

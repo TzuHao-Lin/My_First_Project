@@ -194,8 +194,8 @@ h1 {
 
 .recommendation-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
   margin-top: 16px;
 }
 
@@ -207,6 +207,13 @@ h1 {
   padding: 16px;
   background: #f8fbff;
   color: #172033;
+}
+
+.recommendation-topline {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
 }
 
 .recommendation-card h4,
@@ -223,11 +230,57 @@ h1 {
   line-height: 1.55;
 }
 
+.recommendation-card .rank {
+  display: inline-grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #172033;
+  color: #fff;
+  font-weight: 800;
+}
+
 .recommendation-card .score {
   color: #0a6a9f;
   font-size: 0.82rem;
   font-weight: 800;
   text-transform: uppercase;
+}
+
+.recommendation-label {
+  color: #172033 !important;
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  margin-bottom: 6px !important;
+  text-transform: uppercase;
+}
+
+.traits.compact span {
+  background: #e6f3ff;
+}
+
+.action-list {
+  display: grid;
+  gap: 10px;
+}
+
+.action-item {
+  border-left: 3px solid #9bd0ff;
+  padding-left: 10px;
+}
+
+.action-item span {
+  color: #0a6a9f;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.action-item p {
+  margin-top: 4px;
 }
 
 .section-heading {
