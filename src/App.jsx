@@ -546,6 +546,174 @@ const careers = [
       "你喜歡銷售嗎？",
       "你能接受收入不穩定嗎？"
     ]
+  },
+  {
+    title: "教育顧問 / Education Consultant",
+    category: "Education",
+    description: "幫助學生規劃學習與升學方向。",
+    traits: ["溝通力", "分析能力", "同理心"],
+    path: "Education / counseling -> consulting roles",
+    explore: "Help peers plan study paths",
+    fit: "適合喜歡幫助別人規劃未來的人。",
+    avoid: "如果你不喜歡與人溝通或理解不同需求，可能不適合。",
+    questions: [
+      "你會幫朋友規劃學習或未來方向嗎？",
+      "你喜歡分析不同選擇的優缺點嗎？"
+    ]
+  },
+  {
+    title: "教育科技設計師 / EdTech Designer",
+    category: "Education",
+    description: "設計學習工具或教育平台。",
+    traits: ["創意", "科技", "教學理解"],
+    path: "Education + tech -> product roles",
+    explore: "Design learning apps",
+    fit: "適合喜歡教育與科技結合的人。",
+    avoid: "如果你不喜歡跨領域，可能不適合。",
+    questions: [
+      "你會想讓學習變得更有趣嗎？",
+      "你喜歡設計工具幫助別人學習嗎？"
+    ]
+  },
+  {
+    title: "消防員 / Firefighter",
+    category: "Public Service",
+    description: "處理火災與緊急救援。",
+    traits: ["勇氣", "體力", "冷靜"],
+    path: "Exam -> training -> service",
+    explore: "Emergency training, volunteer",
+    fit: "適合願意幫助他人並面對危險的人。",
+    avoid: "如果你不喜歡高風險或壓力，可能不適合。",
+    questions: [
+      "你能在危險中保持冷靜嗎？",
+      "你願意幫助他人即使有風險嗎？"
+    ]
+  },
+  {
+    title: "政策分析師 / Policy Analyst",
+    category: "Public Service",
+    description: "研究政策並提供建議。",
+    traits: ["分析能力", "邏輯", "公共意識"],
+    path: "Political science -> gov roles",
+    explore: "Analyze policies, current events",
+    fit: "適合關心社會問題並喜歡分析的人。",
+    avoid: "如果你不喜歡閱讀或研究，可能不適合。",
+    questions: [
+      "你會關心政府政策嗎？",
+      "你喜歡分析社會問題嗎？"
+    ]
+  },
+  {
+    title: "活動企劃 / Event Planner",
+    category: "Hospitality",
+    description: "規劃活動與體驗。",
+    traits: ["組織能力", "創意", "溝通力"],
+    path: "Hospitality -> events",
+    explore: "Plan school events",
+    fit: "適合喜歡規劃活動與人互動的人。",
+    avoid: "如果你不喜歡壓力或突發狀況，可能不適合。",
+    questions: [
+      "你喜歡安排活動嗎？",
+      "你能處理臨時變化嗎？"
+    ]
+  },
+  {
+    title: "餐廳經理 / Restaurant Manager",
+    category: "Hospitality",
+    description: "管理餐廳運營與服務。",
+    traits: ["領導力", "溝通力", "應變"],
+    path: "Restaurant work -> management",
+    explore: "Observe restaurant operations",
+    fit: "適合喜歡管理與服務的人。",
+    avoid: "如果你不喜歡忙碌環境，可能不適合。",
+    questions: [
+      "你喜歡管理團隊嗎？",
+      "你能在忙碌環境保持冷靜嗎？"
+    ]
+  },
+  {
+    title: "法務顧問 / Legal Consultant",
+    category: "Law",
+    description: "為公司提供法律建議。",
+    traits: ["邏輯", "分析", "溝通"],
+    path: "Law -> corporate roles",
+    explore: "Case studies",
+    fit: "適合喜歡分析問題並提供建議的人。",
+    avoid: "如果你不喜歡閱讀或推理，可能不適合。",
+    questions: [
+      "你喜歡分析規則嗎？",
+      "你能清楚解釋複雜事情嗎？"
+    ]
+  },
+  {
+    title: "檢察官 / Prosecutor",
+    category: "Law",
+    description: "代表政府進行法律訴訟。",
+    traits: ["正義感", "邏輯", "抗壓"],
+    path: "Law school -> exam",
+    explore: "Court observation",
+    fit: "適合重視正義並能承受壓力的人。",
+    avoid: "如果你不喜歡衝突或壓力，可能不適合。",
+    questions: [
+      "你重視公平與正義嗎？",
+      "你能面對高壓決策嗎？"
+    ]
+  },
+  {
+    title: "空服員 / Flight Attendant",
+    category: "Aviation",
+    description: "提供乘客服務並確保飛行安全。",
+    traits: ["溝通力", "應變能力", "服務精神"],
+    path: "Training -> airline",
+    explore: "Customer service",
+    fit: "適合喜歡旅行與服務的人。",
+    avoid: "如果你不喜歡輪班或長途飛行，可能不適合。",
+    questions: [
+      "你喜歡與不同人互動嗎？",
+      "你能接受不固定作息嗎？"
+    ]
+  },
+  {
+    title: "航管員 / Air Traffic Controller",
+    category: "Aviation",
+    description: "管理飛機起降與空中交通。",
+    traits: ["專注", "冷靜", "決策力"],
+    path: "Training -> certification",
+    explore: "Simulation tools",
+    fit: "適合能快速做決策並專注的人。",
+    avoid: "如果你不喜歡高壓，可能不適合。",
+    questions: [
+      "你能在壓力下快速決定嗎？",
+      "你能長時間保持專注嗎？"
+    ]
+  },
+  {
+    title: "口譯員 / Interpreter",
+    category: "Language",
+    description: "即時翻譯不同語言。",
+    traits: ["反應快", "語言能力", "專注"],
+    path: "Language training -> certification",
+    explore: "Live translation practice",
+    fit: "適合反應快且語言能力強的人。",
+    avoid: "如果你不喜歡壓力或即時表達，可能不適合。",
+    questions: [
+      "你能快速轉換語言嗎？",
+      "你能在壓力下說話嗎？"
+    ]
+  },
+  {
+    title: "語言教師 / Language Teacher",
+    category: "Language",
+    description: "教導他人語言。",
+    traits: ["耐心", "溝通力", "教學能力"],
+    path: "Language degree -> teaching",
+    explore: "Teach friends",
+    fit: "適合喜歡教學與語言的人。",
+    avoid: "如果你不喜歡重複教學，可能不適合。",
+    questions: [
+      "你喜歡教別人嗎？",
+      "你能解釋語言規則嗎？"
+    ]
   }
 ];
 
@@ -622,7 +790,99 @@ const careerTags = {
   "平面設計師 / Graphic Designer": ["creative", "design", "detail", "independent", "fast_change"],
   "動畫師 / Animator": ["creative", "media", "detail", "independent", "planning"],
   "電工 / Electrician": ["hands_on", "technical", "stable", "detail", "engineering"],
-  "房地產經紀人 / Real Estate Agent": ["people", "communication", "business", "risk", "fast_change"]
+  "房地產經紀人 / Real Estate Agent": ["people", "communication", "business", "risk", "fast_change"],
+  "教育顧問 / Education Consultant": ["people", "communication", "planning", "helping", "analytical"],
+  "教育科技設計師 / EdTech Designer": ["creative", "technical", "planning", "education", "design"],
+  "消防員 / Firefighter": ["people", "hands_on", "high_pressure", "public_service", "helping"],
+  "政策分析師 / Policy Analyst": ["analytical", "public_service", "planning", "writing", "stable"],
+  "活動企劃 / Event Planner": ["people", "creative", "communication", "high_pressure", "hospitality"],
+  "餐廳經理 / Restaurant Manager": ["people", "communication", "high_pressure", "hospitality", "business"],
+  "法務顧問 / Legal Consultant": ["people", "analytical", "communication", "business", "long_study"],
+  "檢察官 / Prosecutor": ["people", "analytical", "high_pressure", "public_service", "long_study"],
+  "空服員 / Flight Attendant": ["people", "communication", "high_pressure", "travel", "hospitality"],
+  "航管員 / Air Traffic Controller": ["analytical", "high_pressure", "technical", "detail", "stable"],
+  "口譯員 / Interpreter": ["people", "language", "high_pressure", "communication", "detail"],
+  "語言教師 / Language Teacher": ["people", "language", "communication", "helping", "stable"]
+};
+
+const filterOptions = {
+  salary: ["All", "Low", "Medium", "High", "Very High"],
+  educationLevel: ["All", "Short Training", "Bachelor", "Graduate", "License/Certification"],
+  workStyle: ["All", "People-focused", "Independent", "Hands-on", "Desk-based", "Creative"],
+  pressureLevel: ["All", "Low", "Medium", "High"]
+};
+
+const filterLabels = {
+  All: "全部 / All",
+  Low: "低 / Low",
+  Medium: "中 / Medium",
+  High: "高 / High",
+  "Very High": "很高 / Very High",
+  "Short Training": "短期訓練 / Short Training",
+  Bachelor: "大學 / Bachelor",
+  Graduate: "研究所以上 / Graduate",
+  "License/Certification": "證照 / License",
+  "People-focused": "人群互動 / People-focused",
+  Independent: "獨立工作 / Independent",
+  "Hands-on": "動手實作 / Hands-on",
+  "Desk-based": "桌面分析 / Desk-based",
+  Creative: "創意工作 / Creative",
+  Stable: "穩定 / Stable",
+  Variable: "變動 / Variable"
+};
+
+const careerProfiles = {
+  "醫師 / Physician": { salary: "Very High", educationLevel: "Graduate", workStyle: "People-focused", pressureLevel: "High", stability: "Stable" },
+  "護理師 / Nurse": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Stable" },
+  "心理師 / Psychologist": { salary: "Medium", educationLevel: "Graduate", workStyle: "People-focused", pressureLevel: "Medium", stability: "Stable" },
+  "藥師 / Pharmacist": { salary: "High", educationLevel: "Graduate", workStyle: "People-focused", pressureLevel: "Medium", stability: "Stable" },
+  "機師 / Pilot": { salary: "Very High", educationLevel: "License/Certification", workStyle: "Hands-on", pressureLevel: "High", stability: "Stable" },
+  "翻譯員 / Translator": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Independent", pressureLevel: "Medium", stability: "Variable" },
+  "航太工程師 / Aerospace Engineer": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "High", stability: "Stable" },
+  "土木工程師 / Civil Engineer": { salary: "High", educationLevel: "Bachelor", workStyle: "Hands-on", pressureLevel: "Medium", stability: "Stable" },
+  "機械工程師 / Mechanical Engineer": { salary: "High", educationLevel: "Bachelor", workStyle: "Hands-on", pressureLevel: "Medium", stability: "Stable" },
+  "生物醫學工程師 / Biomedical Engineer": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "建築師 / Architect": { salary: "High", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "High", stability: "Variable" },
+  "軟體工程師 / Software Engineer": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "資料分析師 / Data Analyst": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "資安工程師 / Cybersecurity Analyst": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "High", stability: "Stable" },
+  "UX 設計師 / UX Designer": { salary: "High", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "室內設計師 / Interior Designer": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "會計師 / Accountant": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "行銷企劃 / Marketer": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "創業者 / Entrepreneur": { salary: "Medium", educationLevel: "Short Training", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "律師 / Lawyer": { salary: "Very High", educationLevel: "Graduate", workStyle: "People-focused", pressureLevel: "High", stability: "Stable" },
+  "記者 / Journalist": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "影片創作者 / Content Creator": { salary: "Medium", educationLevel: "Short Training", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "遊戲設計師 / Game Designer": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "教師 / Teacher": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "Medium", stability: "Stable" },
+  "社工 / Social Worker": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Stable" },
+  "警察 / Police Officer": { salary: "Medium", educationLevel: "License/Certification", workStyle: "Hands-on", pressureLevel: "High", stability: "Stable" },
+  "廚師 / Chef": { salary: "Medium", educationLevel: "Short Training", workStyle: "Hands-on", pressureLevel: "High", stability: "Variable" },
+  "飯店經理 / Hotel Manager": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "資料科學家 / Data Scientist": { salary: "Very High", educationLevel: "Graduate", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "產品經理 / Product Manager": { salary: "High", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "物理治療師 / Physical Therapist": { salary: "High", educationLevel: "Graduate", workStyle: "Hands-on", pressureLevel: "Medium", stability: "Stable" },
+  "職能治療師 / Occupational Therapist": { salary: "Medium", educationLevel: "Graduate", workStyle: "People-focused", pressureLevel: "Medium", stability: "Stable" },
+  "生物學家 / Biologist": { salary: "Medium", educationLevel: "Graduate", workStyle: "Independent", pressureLevel: "Medium", stability: "Variable" },
+  "化學家 / Chemist": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Hands-on", pressureLevel: "Medium", stability: "Stable" },
+  "金融分析師 / Financial Analyst": { salary: "High", educationLevel: "Bachelor", workStyle: "Desk-based", pressureLevel: "High", stability: "Variable" },
+  "平面設計師 / Graphic Designer": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "動畫師 / Animator": { salary: "Medium", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "電工 / Electrician": { salary: "Medium", educationLevel: "License/Certification", workStyle: "Hands-on", pressureLevel: "Medium", stability: "Stable" },
+  "房地產經紀人 / Real Estate Agent": { salary: "Medium", educationLevel: "License/Certification", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "教育顧問 / Education Consultant": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "Medium", stability: "Variable" },
+  "教育科技設計師 / EdTech Designer": { salary: "High", educationLevel: "Bachelor", workStyle: "Creative", pressureLevel: "Medium", stability: "Variable" },
+  "消防員 / Firefighter": { salary: "Medium", educationLevel: "License/Certification", workStyle: "Hands-on", pressureLevel: "High", stability: "Stable" },
+  "政策分析師 / Policy Analyst": { salary: "Medium", educationLevel: "Graduate", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "活動企劃 / Event Planner": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "餐廳經理 / Restaurant Manager": { salary: "Medium", educationLevel: "Short Training", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "法務顧問 / Legal Consultant": { salary: "High", educationLevel: "Graduate", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
+  "檢察官 / Prosecutor": { salary: "High", educationLevel: "Graduate", workStyle: "People-focused", pressureLevel: "High", stability: "Stable" },
+  "空服員 / Flight Attendant": { salary: "Medium", educationLevel: "Short Training", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "航管員 / Air Traffic Controller": { salary: "High", educationLevel: "License/Certification", workStyle: "Desk-based", pressureLevel: "High", stability: "Stable" },
+  "口譯員 / Interpreter": { salary: "High", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
+  "語言教師 / Language Teacher": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "Medium", stability: "Stable" }
 };
 
 const quizQuestions = [
@@ -774,12 +1034,17 @@ const tagLabels = {
 
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedSalary, setSelectedSalary] = useState("All");
+  const [selectedEducation, setSelectedEducation] = useState("All");
+  const [selectedWorkStyle, setSelectedWorkStyle] = useState("All");
+  const [selectedPressure, setSelectedPressure] = useState("All");
   const [search, setSearch] = useState("");
   const [answers, setAnswers] = useState({});
 
   const normalizedSearch = search.trim().toLowerCase();
   const careersWithTags = careers.map((career) => ({
     ...career,
+    ...(careerProfiles[career.title] ?? {}),
     tags: careerTags[career.title] ?? []
   }));
   const userTags = Object.values(answers);
@@ -798,11 +1063,24 @@ export default function App() {
   const filteredCareers = careersWithTags.filter((career) => {
     const matchesCategory =
       selectedCategory === "All" || career.category === selectedCategory;
+    const matchesSalary =
+      selectedSalary === "All" || career.salary === selectedSalary;
+    const matchesEducation =
+      selectedEducation === "All" || career.educationLevel === selectedEducation;
+    const matchesWorkStyle =
+      selectedWorkStyle === "All" || career.workStyle === selectedWorkStyle;
+    const matchesPressure =
+      selectedPressure === "All" || career.pressureLevel === selectedPressure;
 
     const searchableText = [
       career.title,
       career.category,
       categoryLabels[career.category],
+      career.salary,
+      career.educationLevel,
+      career.workStyle,
+      career.pressureLevel,
+      career.stability,
       career.description,
       career.path,
       career.explore,
@@ -818,7 +1096,14 @@ export default function App() {
     const matchesSearch =
       normalizedSearch === "" || searchableText.includes(normalizedSearch);
 
-    return matchesCategory && matchesSearch;
+    return (
+      matchesCategory &&
+      matchesSalary &&
+      matchesEducation &&
+      matchesWorkStyle &&
+      matchesPressure &&
+      matchesSearch
+    );
   });
 
   return (
@@ -911,6 +1196,12 @@ export default function App() {
                       <p>{categoryLabels[career.category]}</p>
                     </div>
 
+                    <div className="profile-facts compact">
+                      <span>{filterLabels[career.salary]}</span>
+                      <span>{filterLabels[career.educationLevel]}</span>
+                      <span>{filterLabels[career.workStyle]}</span>
+                    </div>
+
                     <div>
                       <p className="recommendation-label">Why this matches you</p>
                       <p>
@@ -979,6 +1270,64 @@ export default function App() {
               />
             </label>
 
+            <div className="filter-grid">
+              <label>
+                <span>Salary Range</span>
+                <select
+                  onChange={(event) => setSelectedSalary(event.target.value)}
+                  value={selectedSalary}
+                >
+                  {filterOptions.salary.map((option) => (
+                    <option key={option} value={option}>
+                      {filterLabels[option]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                <span>Education Level</span>
+                <select
+                  onChange={(event) => setSelectedEducation(event.target.value)}
+                  value={selectedEducation}
+                >
+                  {filterOptions.educationLevel.map((option) => (
+                    <option key={option} value={option}>
+                      {filterLabels[option]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                <span>Work Style</span>
+                <select
+                  onChange={(event) => setSelectedWorkStyle(event.target.value)}
+                  value={selectedWorkStyle}
+                >
+                  {filterOptions.workStyle.map((option) => (
+                    <option key={option} value={option}>
+                      {filterLabels[option]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+
+              <label>
+                <span>Pressure Level</span>
+                <select
+                  onChange={(event) => setSelectedPressure(event.target.value)}
+                  value={selectedPressure}
+                >
+                  {filterOptions.pressureLevel.map((option) => (
+                    <option key={option} value={option}>
+                      {filterLabels[option]}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+
             <div className="category-filter" aria-label="Filter careers by category">
               {categories.map((category) => (
                 <button
@@ -1005,6 +1354,14 @@ export default function App() {
                   <div>
                     <p className="category">{categoryLabels[career.category]}</p>
                     <h3>{career.title}</h3>
+                  </div>
+
+                  <div className="profile-facts">
+                    <span>Salary: {filterLabels[career.salary]}</span>
+                    <span>Education: {filterLabels[career.educationLevel]}</span>
+                    <span>Style: {filterLabels[career.workStyle]}</span>
+                    <span>Pressure: {filterLabels[career.pressureLevel]}</span>
+                    <span>Stability: {filterLabels[career.stability]}</span>
                   </div>
 
                   <p className="description">{career.description}</p>

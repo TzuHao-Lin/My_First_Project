@@ -334,6 +334,38 @@ h1 {
   border-color: rgba(39, 66, 95, 0.72);
 }
 
+.filter-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+}
+
+.filter-grid label {
+  display: grid;
+  gap: 8px;
+}
+
+.filter-grid span {
+  color: #40506a;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.filter-grid select {
+  width: 100%;
+  border: 1px solid rgba(73, 94, 125, 0.2);
+  border-radius: 16px;
+  padding: 12px 13px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #172033;
+  font: inherit;
+  outline: none;
+}
+
+.filter-grid select:focus {
+  border-color: rgba(39, 66, 95, 0.72);
+}
+
 .category-filter {
   display: flex;
   flex-wrap: wrap;
@@ -383,6 +415,26 @@ h1 {
 .career-card h3 {
   margin: 8px 0 0;
   font-size: 1.35rem;
+}
+
+.profile-facts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.profile-facts span {
+  border-radius: 999px;
+  padding: 7px 10px;
+  background: #f3f6fa;
+  color: #40506a;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.profile-facts.compact span {
+  background: #e6f3ff;
+  color: #24415f;
 }
 
 .description,
@@ -468,6 +520,7 @@ h1 {
 @media (max-width: 860px) {
   .steps,
   .quiz-grid,
+  .filter-grid,
   .career-grid,
   .recommendation-grid {
     grid-template-columns: 1fr;
