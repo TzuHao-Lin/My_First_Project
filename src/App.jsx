@@ -427,13 +427,112 @@ const categoryLabels = {
   Language: "語言 / Language"
 };
 
+const careerTags = {
+  "醫師 / Physician": ["people", "analytical", "high_pressure", "long_study", "planning"],
+  "護理師 / Nurse": ["people", "high_pressure", "hands_on", "stable", "helping"],
+  "心理師 / Psychologist": ["people", "low_pressure", "planning", "helping", "communication"],
+  "藥師 / Pharmacist": ["analytical", "long_study", "stable", "detail", "science"],
+  "機師 / Pilot": ["analytical", "high_pressure", "hands_on", "travel", "technical"],
+  "翻譯員 / Translator": ["independent", "creative", "low_pressure", "detail", "language"],
+  "航太工程師 / Aerospace Engineer": ["analytical", "long_study", "planning", "technical", "science"],
+  "土木工程師 / Civil Engineer": ["analytical", "hands_on", "planning", "stable", "technical"],
+  "機械工程師 / Mechanical Engineer": ["analytical", "hands_on", "technical", "science", "detail"],
+  "生物醫學工程師 / Biomedical Engineer": ["analytical", "long_study", "science", "helping", "technical"],
+  "建築師 / Architect": ["creative", "planning", "long_study", "detail", "design"],
+  "軟體工程師 / Software Engineer": ["independent", "analytical", "planning", "technical", "detail"],
+  "資料分析師 / Data Analyst": ["independent", "analytical", "stable", "detail", "technical"],
+  "資安工程師 / Cybersecurity Analyst": ["independent", "analytical", "high_pressure", "technical", "detail"],
+  "UX 設計師 / UX Designer": ["people", "creative", "planning", "design", "communication"],
+  "室內設計師 / Interior Designer": ["people", "creative", "planning", "design", "hands_on"],
+  "會計師 / Accountant": ["independent", "analytical", "stable", "detail", "business"],
+  "行銷企劃 / Marketer": ["people", "creative", "communication", "business", "fast_change"],
+  "創業者 / Entrepreneur": ["people", "creative", "high_pressure", "risk", "business"],
+  "律師 / Lawyer": ["people", "analytical", "high_pressure", "long_study", "communication"],
+  "記者 / Journalist": ["people", "creative", "high_pressure", "communication", "writing"],
+  "影片創作者 / Content Creator": ["creative", "communication", "risk", "fast_change", "media"],
+  "遊戲設計師 / Game Designer": ["creative", "analytical", "planning", "technical", "media"],
+  "教師 / Teacher": ["people", "communication", "helping", "stable", "planning"],
+  "社工 / Social Worker": ["people", "helping", "communication", "high_pressure", "public_service"],
+  "警察 / Police Officer": ["people", "high_pressure", "hands_on", "public_service", "stable"],
+  "廚師 / Chef": ["creative", "hands_on", "high_pressure", "hospitality", "fast_change"],
+  "飯店經理 / Hotel Manager": ["people", "communication", "high_pressure", "hospitality", "business"]
+};
+
+const quizQuestions = [
+  {
+    id: "workStyle",
+    text: "你比較喜歡哪種工作方式？",
+    options: [
+      { text: "和人互動、合作", value: "people" },
+      { text: "自己專注完成任務", value: "independent" }
+    ]
+  },
+  {
+    id: "thinkingStyle",
+    text: "你比較偏向哪一種思考？",
+    options: [
+      { text: "創意發想", value: "creative" },
+      { text: "邏輯分析", value: "analytical" }
+    ]
+  },
+  {
+    id: "pressure",
+    text: "你對高壓環境的接受度？",
+    options: [
+      { text: "可以接受高壓與突發狀況", value: "high_pressure" },
+      { text: "希望壓力不要太大", value: "low_pressure" }
+    ]
+  },
+  {
+    id: "doingStyle",
+    text: "你比較喜歡哪種任務？",
+    options: [
+      { text: "動手做、實作", value: "hands_on" },
+      { text: "規劃、思考、設計", value: "planning" }
+    ]
+  },
+  {
+    id: "growth",
+    text: "你對長期學習專業知識的感覺？",
+    options: [
+      { text: "可以接受長期深入學習", value: "long_study" },
+      { text: "比較想快點做出作品或看到成果", value: "fast_change" }
+    ]
+  },
+  {
+    id: "stability",
+    text: "你比較重視哪一種職涯感覺？",
+    options: [
+      { text: "穩定、有清楚規則", value: "stable" },
+      { text: "冒險、有變化和挑戰", value: "risk" }
+    ]
+  }
+];
+
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [search, setSearch] = useState("");
+  const [answers, setAnswers] = useState({});
 
   const normalizedSearch = search.trim().toLowerCase();
+  const careersWithTags = careers.map((career) => ({
+    ...career,
+    tags: careerTags[career.title] ?? []
+  }));
+  const userTags = Object.values(answers);
+  const answeredCount = userTags.length;
+  const quizComplete = answeredCount === quizQuestions.length;
 
-  const filteredCareers = careers.filter((career) => {
+  const recommendedCareers = careersWithTags
+    .map((career) => {
+      const score = career.tags.filter((tag) => userTags.includes(tag)).length;
+      return { ...career, score };
+    })
+    .filter((career) => career.score > 0)
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
+    .slice(0, 5);
+
+  const filteredCareers = careersWithTags.filter((career) => {
     const matchesCategory =
       selectedCategory === "All" || career.category === selectedCategory;
 
@@ -447,7 +546,8 @@ export default function App() {
       career.fit,
       career.avoid,
       ...career.traits,
-      ...career.questions
+      ...career.questions,
+      ...career.tags
     ]
       .join(" ")
       .toLowerCase();
@@ -484,12 +584,83 @@ export default function App() {
           </div>
         </header>
 
+        <section className="quiz-panel">
+          <div className="quiz-intro">
+            <p className="eyebrow">Quick Match Quiz</p>
+            <h2>先回答幾題，看看哪些職業可能適合你</h2>
+            <p>
+              這不是正式心理測驗，而是把你的偏好轉成 tags，再用簡單分數推薦幾個方向。
+            </p>
+          </div>
+
+          <div className="quiz-grid">
+            {quizQuestions.map((question) => (
+              <article className="quiz-question" key={question.id}>
+                <h3>{question.text}</h3>
+                <div className="quiz-options">
+                  {question.options.map((option) => (
+                    <button
+                      className={answers[question.id] === option.value ? "selected" : ""}
+                      key={option.value}
+                      onClick={() =>
+                        setAnswers((currentAnswers) => ({
+                          ...currentAnswers,
+                          [question.id]: option.value
+                        }))
+                      }
+                      type="button"
+                    >
+                      {option.text}
+                    </button>
+                  ))}
+                </div>
+              </article>
+            ))}
+          </div>
+
+          <div className="quiz-footer">
+            <p>
+              已回答 {answeredCount} / {quizQuestions.length} 題
+            </p>
+            {answeredCount > 0 && (
+              <button onClick={() => setAnswers({})} type="button">
+                Reset answers
+              </button>
+            )}
+          </div>
+
+          {quizComplete ? (
+            <div className="recommendations">
+              <div>
+                <p className="eyebrow">Top Matches</p>
+                <h3>Top 5 careers that may fit you</h3>
+              </div>
+              <div className="recommendation-grid">
+                {recommendedCareers.map((career) => (
+                  <article className="recommendation-card" key={career.title}>
+                    <div>
+                      <p className="score">{career.score} tag matches</p>
+                      <h4>{career.title}</h4>
+                      <p>{categoryLabels[career.category]}</p>
+                    </div>
+                    <p>{career.fit}</p>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="recommendation-placeholder">
+              回答完全部問題後，這裡會顯示你的 Top 5 推薦職業。
+            </div>
+          )}
+        </section>
+
         <section>
           <div className="section-heading">
             <div>
               <h2 className="section-title">Career Cards</h2>
               <p className="section-subtitle">
-                目前顯示 {filteredCareers.length} / {careers.length} 個職業
+                目前顯示 {filteredCareers.length} / {careersWithTags.length} 個職業
               </p>
             </div>
           </div>

@@ -86,6 +86,150 @@ h1 {
   color: #536070;
 }
 
+.quiz-panel {
+  margin-top: 28px;
+  border: 1px solid rgba(125, 141, 164, 0.25);
+  border-radius: 28px;
+  padding: 28px;
+  background: rgba(23, 32, 51, 0.94);
+  color: #f8fbff;
+  box-shadow: 0 24px 60px rgba(39, 55, 77, 0.12);
+}
+
+.quiz-intro h2,
+.quiz-intro p {
+  margin: 0;
+}
+
+.quiz-intro h2 {
+  margin-top: 8px;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  letter-spacing: -0.04em;
+}
+
+.quiz-intro p {
+  max-width: 720px;
+  margin-top: 12px;
+  color: #c8d3e1;
+  line-height: 1.7;
+}
+
+.quiz-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.quiz-question {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 20px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.quiz-question h3 {
+  margin: 0 0 14px;
+  font-size: 1rem;
+}
+
+.quiz-options {
+  display: grid;
+  gap: 10px;
+}
+
+.quiz-options button,
+.quiz-footer button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 11px 13px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fbff;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.quiz-options button.selected {
+  border-color: #9bd0ff;
+  background: #dff0ff;
+  color: #172033;
+}
+
+.quiz-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 18px;
+  color: #c8d3e1;
+}
+
+.quiz-footer p {
+  margin: 0;
+}
+
+.quiz-footer button {
+  text-align: center;
+}
+
+.recommendations,
+.recommendation-placeholder {
+  margin-top: 22px;
+  border-radius: 22px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.recommendations h3,
+.recommendations p,
+.recommendation-placeholder {
+  margin: 0;
+}
+
+.recommendations h3 {
+  margin-top: 6px;
+  font-size: 1.4rem;
+}
+
+.recommendation-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.recommendation-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-radius: 18px;
+  padding: 16px;
+  background: #f8fbff;
+  color: #172033;
+}
+
+.recommendation-card h4,
+.recommendation-card p {
+  margin: 0;
+}
+
+.recommendation-card h4 {
+  margin-top: 6px;
+}
+
+.recommendation-card p {
+  color: #536070;
+  line-height: 1.55;
+}
+
+.recommendation-card .score {
+  color: #0a6a9f;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
 .section-heading {
   display: flex;
   align-items: end;
@@ -270,11 +414,22 @@ h1 {
 
 @media (max-width: 860px) {
   .steps,
-  .career-grid {
+  .quiz-grid,
+  .career-grid,
+  .recommendation-grid {
     grid-template-columns: 1fr;
   }
 
   .hero {
     padding: 28px;
+  }
+
+  .quiz-panel {
+    padding: 22px;
+  }
+
+  .quiz-footer {
+    align-items: stretch;
+    flex-direction: column;
   }
 }
