@@ -104,11 +104,43 @@ h1 {
   color: #68758a;
 }
 
+.controls {
+  display: grid;
+  gap: 16px;
+  margin: 0 0 24px;
+}
+
+.search-box {
+  display: grid;
+  gap: 8px;
+  max-width: 620px;
+}
+
+.search-box span {
+  color: #40506a;
+  font-weight: 700;
+}
+
+.search-box input {
+  width: 100%;
+  border: 1px solid rgba(73, 94, 125, 0.2);
+  border-radius: 18px;
+  padding: 15px 17px;
+  background: rgba(255, 255, 255, 0.84);
+  color: #172033;
+  font: inherit;
+  outline: none;
+  box-shadow: 0 12px 35px rgba(39, 55, 77, 0.06);
+}
+
+.search-box input:focus {
+  border-color: rgba(39, 66, 95, 0.72);
+}
+
 .category-filter {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
-  margin: 0 0 24px;
 }
 
 .category-filter button {
@@ -180,6 +212,60 @@ h1 {
   background: #edf4fb;
   color: #2e415d;
   font-size: 0.92rem;
+}
+
+.insight-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.insight {
+  border-radius: 18px;
+  padding: 14px;
+}
+
+.insight p {
+  margin: 0;
+}
+
+.insight p + p {
+  margin-top: 7px;
+  color: #536070;
+  line-height: 1.65;
+}
+
+.insight.fit {
+  background: #eef8f2;
+}
+
+.insight.avoid {
+  background: #fff3ed;
+}
+
+.questions {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+  color: #536070;
+  line-height: 1.6;
+}
+
+.empty-state {
+  border: 1px dashed rgba(73, 94, 125, 0.28);
+  border-radius: 24px;
+  padding: 28px;
+  background: rgba(255, 255, 255, 0.72);
+  color: #536070;
+}
+
+.empty-state h3,
+.empty-state p {
+  margin: 0;
+}
+
+.empty-state p {
+  margin-top: 8px;
 }
 
 @media (max-width: 860px) {
