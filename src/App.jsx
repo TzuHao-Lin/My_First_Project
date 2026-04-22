@@ -392,6 +392,160 @@ const careers = [
       "你遇到不滿意的客人時，能保持禮貌並解決問題嗎？",
       "你喜歡讓別人的旅行或住宿體驗變得更順利嗎？"
     ]
+  },
+  {
+    title: "資料科學家 / Data Scientist",
+    category: "Technology",
+    description: "用統計與機器學習分析資料並做預測。",
+    traits: ["邏輯", "分析能力", "好奇心"],
+    path: "Math/CS -> ML/Stats -> data science roles",
+    explore: "Kaggle projects, ML tutorials",
+    fit: "適合喜歡用數據理解世界並建立模型的人。",
+    avoid: "如果你不喜歡數學或抽象思考，可能不適合。",
+    questions: [
+      "你會想用資料預測未來嗎？",
+      "你喜歡找規律和做分析嗎？"
+    ]
+  },
+  {
+    title: "產品經理 / Product Manager",
+    category: "Business",
+    description: "決定產品方向並協調工程、設計與商業。",
+    traits: ["溝通力", "決策力", "同理心"],
+    path: "Any degree -> product experience -> PM",
+    explore: "Analyze apps, build features, startup projects",
+    fit: "適合喜歡整合資訊與做決策的人。",
+    avoid: "如果你不喜歡模糊問題或溝通協調，可能不適合。",
+    questions: [
+      "你會思考產品該做什麼嗎？",
+      "你喜歡協調不同角色嗎？"
+    ]
+  },
+  {
+    title: "物理治療師 / Physical Therapist",
+    category: "Healthcare",
+    description: "幫助病人恢復運動與身體功能。",
+    traits: ["耐心", "同理心", "動手能力"],
+    path: "PT program -> license",
+    explore: "Observe rehab sessions, anatomy study",
+    fit: "適合喜歡幫助人恢復身體能力的人。",
+    avoid: "如果你不喜歡長期陪伴或體力工作，可能不適合。",
+    questions: [
+      "你喜歡幫助別人慢慢進步嗎？",
+      "你能接受需要長期訓練嗎？"
+    ]
+  },
+  {
+    title: "職能治療師 / Occupational Therapist",
+    category: "Healthcare",
+    description: "幫助病人恢復日常生活能力。",
+    traits: ["創意", "耐心", "同理心"],
+    path: "OT program -> license",
+    explore: "Rehab center observation",
+    fit: "適合喜歡設計活動幫助他人的人。",
+    avoid: "如果你不喜歡重複練習或照顧他人，可能不適合。",
+    questions: [
+      "你喜歡幫助別人重新生活嗎？",
+      "你能接受不同人需要不同方法嗎？"
+    ]
+  },
+  {
+    title: "生物學家 / Biologist",
+    category: "Science",
+    description: "研究生命系統與生物現象。",
+    traits: ["好奇心", "觀察力", "耐心"],
+    path: "Biology degree -> research",
+    explore: "Lab work, microscope observation",
+    fit: "適合喜歡研究生命與自然的人。",
+    avoid: "如果你不喜歡實驗與不確定性，可能不適合。",
+    questions: [
+      "你會好奇生命怎麼運作嗎？",
+      "你能接受研究沒有立即答案嗎？"
+    ]
+  },
+  {
+    title: "化學家 / Chemist",
+    category: "Science",
+    description: "研究物質組成與反應。",
+    traits: ["細心", "分析能力", "實驗能力"],
+    path: "Chemistry degree -> lab work",
+    explore: "Simple experiments, reactions study",
+    fit: "適合喜歡實驗與分析物質的人。",
+    avoid: "如果你不喜歡實驗或精準操作，可能不適合。",
+    questions: [
+      "你喜歡做實驗嗎？",
+      "你會想知道物質怎麼變化嗎？"
+    ]
+  },
+  {
+    title: "金融分析師 / Financial Analyst",
+    category: "Business",
+    description: "分析投資與市場趨勢。",
+    traits: ["分析能力", "數字敏感", "決策能力"],
+    path: "Finance degree -> analyst roles",
+    explore: "Stock tracking, finance news",
+    fit: "適合喜歡數字與市場分析的人。",
+    avoid: "如果你不喜歡風險或壓力，可能不適合。",
+    questions: [
+      "你會關心股票或市場嗎？",
+      "你喜歡分析數字嗎？"
+    ]
+  },
+  {
+    title: "平面設計師 / Graphic Designer",
+    category: "Design",
+    description: "設計品牌視覺與圖像。",
+    traits: ["創意", "美感", "細節"],
+    path: "Design -> portfolio",
+    explore: "Poster design, logo redesign",
+    fit: "適合喜歡視覺設計的人。",
+    avoid: "如果你不喜歡修改作品，可能不適合。",
+    questions: [
+      "你會注意設計嗎？",
+      "你喜歡創作視覺作品嗎？"
+    ]
+  },
+  {
+    title: "動畫師 / Animator",
+    category: "Media",
+    description: "製作動畫與角色動作。",
+    traits: ["創意", "耐心", "觀察力"],
+    path: "Animation -> portfolio",
+    explore: "Simple animation projects",
+    fit: "適合喜歡角色與動作設計的人。",
+    avoid: "如果你不喜歡反覆修改，可能不適合。",
+    questions: [
+      "你喜歡動畫嗎？",
+      "你會觀察動作細節嗎？"
+    ]
+  },
+  {
+    title: "電工 / Electrician",
+    category: "Engineering",
+    description: "安裝與維修電力系統。",
+    traits: ["動手能力", "細心", "實作"],
+    path: "Apprenticeship -> certification",
+    explore: "Basic circuits",
+    fit: "適合喜歡動手解決問題的人。",
+    avoid: "如果你不喜歡現場工作，可能不適合。",
+    questions: [
+      "你喜歡修東西嗎？",
+      "你能接受現場工作嗎？"
+    ]
+  },
+  {
+    title: "房地產經紀人 / Real Estate Agent",
+    category: "Business",
+    description: "協助買賣房產與市場分析。",
+    traits: ["溝通力", "業務能力", "應變能力"],
+    path: "License -> sales",
+    explore: "Market observation",
+    fit: "適合喜歡與人互動並談判的人。",
+    avoid: "如果你不喜歡業績壓力，可能不適合。",
+    questions: [
+      "你喜歡銷售嗎？",
+      "你能接受收入不穩定嗎？"
+    ]
   }
 ];
 
@@ -400,6 +554,7 @@ const categories = [
   "Healthcare",
   "Technology",
   "Engineering",
+  "Science",
   "Business",
   "Design",
   "Media",
@@ -416,6 +571,7 @@ const categoryLabels = {
   Healthcare: "醫療健康 / Healthcare",
   Technology: "科技 / Technology",
   Engineering: "工程 / Engineering",
+  Science: "科學研究 / Science",
   Business: "商業 / Business",
   Design: "設計 / Design",
   Media: "媒體創作 / Media",
@@ -455,7 +611,18 @@ const careerTags = {
   "社工 / Social Worker": ["people", "helping", "communication", "high_pressure", "public_service"],
   "警察 / Police Officer": ["people", "high_pressure", "hands_on", "public_service", "stable"],
   "廚師 / Chef": ["creative", "hands_on", "high_pressure", "hospitality", "fast_change"],
-  "飯店經理 / Hotel Manager": ["people", "communication", "high_pressure", "hospitality", "business"]
+  "飯店經理 / Hotel Manager": ["people", "communication", "high_pressure", "hospitality", "business"],
+  "資料科學家 / Data Scientist": ["analytical", "independent", "technical", "long_study", "science"],
+  "產品經理 / Product Manager": ["people", "communication", "planning", "business", "fast_change"],
+  "物理治療師 / Physical Therapist": ["people", "hands_on", "helping", "long_study", "stable"],
+  "職能治療師 / Occupational Therapist": ["people", "creative", "helping", "planning", "stable"],
+  "生物學家 / Biologist": ["analytical", "science", "independent", "long_study", "detail"],
+  "化學家 / Chemist": ["analytical", "science", "hands_on", "detail", "independent"],
+  "金融分析師 / Financial Analyst": ["analytical", "business", "risk", "detail", "high_pressure"],
+  "平面設計師 / Graphic Designer": ["creative", "design", "detail", "independent", "fast_change"],
+  "動畫師 / Animator": ["creative", "media", "detail", "independent", "planning"],
+  "電工 / Electrician": ["hands_on", "technical", "stable", "detail", "engineering"],
+  "房地產經紀人 / Real Estate Agent": ["people", "communication", "business", "risk", "fast_change"]
 };
 
 const quizQuestions = [
@@ -533,6 +700,12 @@ const actionPlans = {
     try: "Build a small model, sketch a design, use CAD, or test a simple engineering prototype.",
     join: "Join robotics, physics club, engineering club, model rocket club, or design-build competitions.",
     learn: "Start with physics, math, CAD, prototyping, problem solving, and technical documentation."
+  },
+  Science: {
+    watch: "Watch lab tour videos, scientist interviews, or explainers about biology and chemistry discoveries.",
+    try: "Run a safe home experiment, observe samples with a microscope, or analyze a public science dataset.",
+    join: "Join science club, research programs, lab volunteering, science fair, or biology/chemistry competitions.",
+    learn: "Start with experimental design, lab safety, statistics, scientific writing, and observation skills."
   },
   Technology: {
     watch: "Watch beginner coding, data dashboard, or cybersecurity lab videos.",
