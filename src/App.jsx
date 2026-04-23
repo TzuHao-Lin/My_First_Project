@@ -336,7 +336,7 @@ export default function App() {
             </div>
           ) : (
             <div className="recommendation-placeholder">
-              回答完全部問題後，這裡會顯示你的 Top 5 推薦職業。
+              回答完全部問題後，這裡會顯示你的 Top 3 推薦職業。
             </div>
           )}
         </section>
@@ -449,11 +449,9 @@ export default function App() {
                   </div>
 
                   <div className="profile-facts">
-                    <span>Salary: {filterLabels[career.salary]}</span>
-                    <span>Education: {filterLabels[career.educationLevel]}</span>
-                    <span>Style: {filterLabels[career.workStyle]}</span>
-                    <span>Pressure: {filterLabels[career.pressureLevel]}</span>
-                    <span>Stability: {filterLabels[career.stability]}</span>
+                    <span>{filterLabels[career.salary]}</span>
+                    <span>{filterLabels[career.educationLevel]}</span>
+                    <span>{filterLabels[career.workStyle]}</span>
                   </div>
 
                   <p className="description">{career.description}</p>
@@ -467,34 +465,14 @@ export default function App() {
                     </div>
                   </div>
 
-                  <div className="insight-grid">
-                    <div className="insight fit">
-                      <p className="label">適合你如果...</p>
-                      <p>{career.fit}</p>
-                    </div>
-                    <div className="insight avoid">
-                      <p className="label">可能不適合如果...</p>
-                      <p>{career.avoid}</p>
-                    </div>
+                  <div>
+                    <p className="label">適合你如果...</p>
+                    <p className="detail">{career.fit}</p>
                   </div>
 
-                  <div>
-                    <p className="label">Typical Path</p>
-                    <p className="detail">{career.path}</p>
-                  </div>
-
-                  <div>
-                    <p className="label">How to test your interest</p>
+                  <div className="try-box">
+                    <p className="label">Try this</p>
                     <p className="detail">{career.explore}</p>
-                  </div>
-
-                  <div>
-                    <p className="label">Self-exploration questions</p>
-                    <ul className="questions">
-                      {career.questions.map((question) => (
-                        <li key={question}>{question}</li>
-                      ))}
-                    </ul>
                   </div>
                 </article>
               ))}

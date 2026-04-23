@@ -62,5 +62,37 @@ export const quizQuestions = [
       { text: "系統、分析、工具或清楚結論", value: "structured_output", scores: { logic: 16, stability: 6 } },
       { text: "故事、設計、體驗或有創意的作品", value: "creative_output", scores: { creativity: 18, people: 4 } }
     ]
+  },
+  {
+    id: "workEnvironment",
+    text: "你比較能想像自己在哪種環境工作？",
+    options: [
+      { text: "辦公室、電腦前、安靜分析", value: "desk_environment", scores: { logic: 12, people: -8, stability: 4 } },
+      { text: "現場、移動、和真實情境互動", value: "field_environment", scores: { people: 8, pressure: 8, creativity: 4 } }
+    ]
+  },
+  {
+    id: "motivation",
+    text: "你最容易被哪種事情推動？",
+    options: [
+      { text: "解決一個清楚、困難的問題", value: "solve_problem", scores: { logic: 18, longLearning: 6 } },
+      { text: "幫助一個人或改善他的體驗", value: "help_people", scores: { people: 18, creativity: 4 } }
+    ]
+  },
+  {
+    id: "routine",
+    text: "你對工作節奏的偏好？",
+    options: [
+      { text: "固定流程、可預測、慢慢變熟", value: "routine", scores: { stability: 18, pressure: -6 } },
+      { text: "每天有新狀況、需要快速反應", value: "variety", scores: { stability: -16, pressure: 10, creativity: 6 } }
+    ]
+  },
+  {
+    id: "learningStyle",
+    text: "你比較喜歡怎麼學新東西？",
+    options: [
+      { text: "讀資料、研究原理、建立系統", value: "study_theory", scores: { logic: 14, longLearning: 16 } },
+      { text: "直接做作品、邊做邊修正", value: "learn_by_making", scores: { creativity: 12, logic: 6, longLearning: -4 } }
+    ]
   }
 ];

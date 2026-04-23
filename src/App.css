@@ -401,20 +401,21 @@ h1 {
 
 .career-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 20px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
 .career-card {
   display: flex;
   flex-direction: column;
-  gap: 18px;
-  padding: 24px;
+  gap: 14px;
+  padding: 20px;
 }
 
 .career-card h3 {
   margin: 8px 0 0;
-  font-size: 1.35rem;
+  font-size: 1.18rem;
+  line-height: 1.25;
 }
 
 .profile-facts {
@@ -425,10 +426,10 @@ h1 {
 
 .profile-facts span {
   border-radius: 999px;
-  padding: 7px 10px;
+  padding: 6px 9px;
   background: #f3f6fa;
   color: #40506a;
-  font-size: 0.78rem;
+  font-size: 0.72rem;
   font-weight: 700;
 }
 
@@ -441,12 +442,23 @@ h1 {
 .detail {
   margin: 0;
   color: #536070;
-  line-height: 1.7;
+  line-height: 1.55;
+}
+
+.description {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
 
 .label {
-  margin: 0 0 8px;
+  margin: 0 0 6px;
+  color: #172033;
+  font-size: 0.78rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
 .traits {
@@ -457,38 +469,16 @@ h1 {
 
 .traits span {
   border-radius: 999px;
-  padding: 6px 12px;
+  padding: 5px 10px;
   background: #edf4fb;
   color: #2e415d;
-  font-size: 0.92rem;
+  font-size: 0.8rem;
 }
 
-.insight-grid {
-  display: grid;
-  gap: 12px;
-}
-
-.insight {
-  border-radius: 18px;
-  padding: 14px;
-}
-
-.insight p {
-  margin: 0;
-}
-
-.insight p + p {
-  margin-top: 7px;
-  color: #536070;
-  line-height: 1.65;
-}
-
-.insight.fit {
+.try-box {
+  border-radius: 16px;
+  padding: 12px;
   background: #eef8f2;
-}
-
-.insight.avoid {
-  background: #fff3ed;
 }
 
 .questions {
@@ -515,6 +505,12 @@ h1 {
 
 .empty-state p {
   margin-top: 8px;
+}
+
+@media (max-width: 1120px) {
+  .career-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 @media (max-width: 860px) {
