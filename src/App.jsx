@@ -5,10 +5,121 @@ import { careerProfiles } from "./data/careerProfiles";
 import { careerTags } from "./data/careerTags";
 import { categories } from "./data/categories";
 import { categoryLabels } from "./data/categoryLabels";
+import { dimensionLabels, dimensions } from "./data/dimensions";
 import { filterLabels } from "./data/filterLabels";
 import { filterOptions } from "./data/filterOptions";
 import { quizQuestions } from "./data/quizQuestions";
-import { tagLabels } from "./data/tagLabels";
+
+const clampScore = (score) => Math.min(100, Math.max(0, score));
+
+const createNeutralProfile = () =>
+  Object.fromEntries(dimensions.map((dimension) => [dimension, 50]));
+
+const applyScores = (profile, scores) => {
+  const nextProfile = { ...profile };
+
+  Object.entries(scores).forEach(([dimension, score]) => {
+    nextProfile[dimension] = clampScore((nextProfile[dimension] ?? 50) + score);
+  });
+
+  return nextProfile;
+};
+
+const getUserProfile = (answers) =>
+  Object.values(answers).reduce(
+    (profile, answer) => applyScores(profile, answer.scores),
+    createNeutralProfile()
+  );
+
+const tagDimensionScores = {
+  people: { people: 24 },
+  communication: { people: 18 },
+  helping: { people: 20 },
+  independent: { people: -24, logic: 8 },
+  analytical: { logic: 24 },
+  technical: { logic: 18 },
+  detail: { logic: 12, stability: 4 },
+  science: { logic: 16, longLearning: 10 },
+  creative: { creativity: 24 },
+  design: { creativity: 18 },
+  media: { creativity: 14 },
+  writing: { creativity: 8, people: 4 },
+  high_pressure: { pressure: 24 },
+  low_pressure: { pressure: -20 },
+  stable: { stability: 20 },
+  risk: { stability: -22, pressure: 8 },
+  fast_change: { stability: -14, creativity: 8 },
+  long_study: { longLearning: 24 },
+  planning: { logic: 10, creativity: 6, longLearning: 4 },
+  hands_on: { logic: 8, creativity: 4 },
+  business: { people: 6, logic: 6 },
+  public_service: { people: 10, pressure: 8 },
+  hospitality: { people: 12, pressure: 8 },
+  language: { people: 6, creativity: 8, longLearning: 4 },
+  travel: { stability: -8, pressure: 6 },
+  education: { people: 12, creativity: 6 },
+  engineering: { logic: 16 }
+};
+
+const profileDimensionScores = {
+  workStyle: {
+    "People-focused": { people: 18 },
+    Independent: { people: -18, logic: 6 },
+    "Hands-on": { logic: 8, creativity: 4 },
+    "Desk-based": { logic: 10, people: -6 },
+    Creative: { creativity: 18 }
+  },
+  pressureLevel: {
+    Low: { pressure: -20 },
+    Medium: {},
+    High: { pressure: 20 }
+  },
+  stability: {
+    Stable: { stability: 18 },
+    Variable: { stability: -18, creativity: 4 }
+  },
+  educationLevel: {
+    "Short Training": { longLearning: -14 },
+    Bachelor: {},
+    Graduate: { longLearning: 18 },
+    "License/Certification": { longLearning: 8, stability: 4 }
+  }
+};
+
+const getCareerFitProfile = (career) => {
+  let profile = createNeutralProfile();
+
+  career.tags.forEach((tag) => {
+    profile = applyScores(profile, tagDimensionScores[tag] ?? {});
+  });
+
+  ["workStyle", "pressureLevel", "stability", "educationLevel"].forEach((field) => {
+    profile = applyScores(profile, profileDimensionScores[field]?.[career[field]] ?? {});
+  });
+
+  return profile;
+};
+
+const getMatchScore = (userProfile, careerProfile) => {
+  const totalDifference = dimensions.reduce(
+    (sum, dimension) => sum + Math.abs(userProfile[dimension] - careerProfile[dimension]),
+    0
+  );
+  const maxDifference = dimensions.length * 100;
+
+  return Math.round(100 - (totalDifference / maxDifference) * 100);
+};
+
+const getClosestDimensions = (userProfile, careerProfile) =>
+  dimensions
+    .map((dimension) => ({
+      dimension,
+      difference: Math.abs(userProfile[dimension] - careerProfile[dimension])
+    }))
+    .sort((a, b) => a.difference - b.difference)
+    .slice(0, 3)
+    .map(({ dimension }) => dimension);
+
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSalary, setSelectedSalary] = useState("All");
@@ -24,16 +135,18 @@ export default function App() {
     ...(careerProfiles[career.title] ?? {}),
     tags: careerTags[career.title] ?? []
   }));
-  const userTags = Object.values(answers);
-  const answeredCount = userTags.length;
+  const answeredCount = Object.keys(answers).length;
   const quizComplete = answeredCount === quizQuestions.length;
+  const userProfile = getUserProfile(answers);
 
   const recommendedCareers = careersWithTags
     .map((career) => {
-      const matchedTags = career.tags.filter((tag) => userTags.includes(tag));
-      return { ...career, matchedTags, score: matchedTags.length };
+      const fitProfile = getCareerFitProfile(career);
+      const score = getMatchScore(userProfile, fitProfile);
+      const closestDimensions = getClosestDimensions(userProfile, fitProfile);
+
+      return { ...career, closestDimensions, fitProfile, score };
     })
-    .filter((career) => career.score > 0)
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
     .slice(0, 3);
 
@@ -125,12 +238,12 @@ export default function App() {
                 <div className="quiz-options">
                   {question.options.map((option) => (
                     <button
-                      className={answers[question.id] === option.value ? "selected" : ""}
+                      className={answers[question.id]?.value === option.value ? "selected" : ""}
                       key={option.value}
                       onClick={() =>
                         setAnswers((currentAnswers) => ({
                           ...currentAnswers,
-                          [question.id]: option.value
+                          [question.id]: option
                         }))
                       }
                       type="button"
@@ -165,7 +278,7 @@ export default function App() {
                   <article className="recommendation-card" key={career.title}>
                     <div className="recommendation-topline">
                       <p className="rank">#{index + 1}</p>
-                      <p className="score">{career.score} tag matches</p>
+                      <p className="score">{career.score}% match</p>
                     </div>
 
                     <div>
@@ -182,9 +295,11 @@ export default function App() {
                     <div>
                       <p className="recommendation-label">Why this matches you</p>
                       <p>
-                        你的答案和這個職業的{" "}
-                        {career.matchedTags.map((tag) => tagLabels[tag] ?? tag).join("、")}{" "}
-                        特質有重疊。
+                        你的回答和這個職業在{" "}
+                        {career.closestDimensions
+                          .map((dimension) => dimensionLabels[dimension])
+                          .join("、")}{" "}
+                        這幾個面向最接近。
                       </p>
                     </div>
 
