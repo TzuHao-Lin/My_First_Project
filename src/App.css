@@ -481,6 +481,36 @@ h1 {
   background: #eef8f2;
 }
 
+.career-details {
+  border-top: 1px solid rgba(73, 94, 125, 0.12);
+  padding-top: 4px;
+}
+
+.career-details summary {
+  border-radius: 999px;
+  padding: 9px 12px;
+  background: #172033;
+  color: #fff;
+  cursor: pointer;
+  font-size: 0.84rem;
+  font-weight: 800;
+  list-style: none;
+  text-align: center;
+}
+
+.career-details summary::-webkit-details-marker {
+  display: none;
+}
+
+.career-details[open] {
+  display: grid;
+  gap: 14px;
+}
+
+.career-details[open] summary {
+  background: #27425f;
+}
+
 .questions {
   display: grid;
   gap: 8px;

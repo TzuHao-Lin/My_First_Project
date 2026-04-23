@@ -474,6 +474,29 @@ export default function App() {
                     <p className="label">Try this</p>
                     <p className="detail">{career.explore}</p>
                   </div>
+
+                  <details className="career-details">
+                    <summary>View more details</summary>
+
+                    <div>
+                      <p className="label">可能不適合如果...</p>
+                      <p className="detail">{career.avoid}</p>
+                    </div>
+
+                    <div>
+                      <p className="label">Typical Path</p>
+                      <p className="detail">{career.path}</p>
+                    </div>
+
+                    <div>
+                      <p className="label">Self-exploration questions</p>
+                      <ul className="questions">
+                        {career.questions.map((question) => (
+                          <li key={question}>{question}</li>
+                        ))}
+                      </ul>
+                    </div>
+                  </details>
                 </article>
               ))}
             </div>
