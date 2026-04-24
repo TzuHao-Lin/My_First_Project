@@ -335,6 +335,13 @@ h1 {
   font-size: 1.4rem;
 }
 
+.cluster-summary {
+  margin-top: 8px !important;
+  color: #9bd0ff !important;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+
 .recommendations-header {
   display: flex;
   align-items: end;

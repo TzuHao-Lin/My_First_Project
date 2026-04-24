@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { actionPlans, ageActionPlans } from "./data/actionPlans";
 import { careers } from "./data/careers";
+import { careerClusters } from "./data/careerClusters";
 import { careerProfiles } from "./data/careerProfiles";
 import { careerTags } from "./data/careerTags";
 import { categories } from "./data/categories";
@@ -216,6 +217,59 @@ const getRecommendationScore = ({
   };
 };
 
+const getClusterScores = ({
+  careersWithTags,
+  userProfile,
+  selectedInterestObjects,
+  matchedDesiredCareer
+}) =>
+  Object.entries(careerClusters)
+    .map(([clusterId, cluster]) => {
+      const clusterCareers = careersWithTags.filter((career) => cluster.careers.includes(career.title));
+
+      const topCareerMatches = clusterCareers
+        .map((career) => getMatchScore(userProfile, getCareerFitProfile(career)))
+        .sort((a, b) => b - a)
+        .slice(0, 3);
+
+      const baseScore =
+        topCareerMatches.length > 0
+          ? Math.round(
+              topCareerMatches.reduce((sum, score) => sum + score, 0) / topCareerMatches.length
+            )
+          : 0;
+
+      const categoryBoost = selectedInterestObjects.reduce((sum, interest) => {
+        const overlap = interest.categories.filter((category) =>
+          cluster.categories.includes(category)
+        ).length;
+
+        return sum + overlap * 4;
+      }, 0);
+
+      const tagBoost = selectedInterestObjects.reduce((sum, interest) => {
+        const overlap = interest.tags.filter((tag) => cluster.tags.includes(tag)).length;
+
+        return sum + overlap * 3;
+      }, 0);
+
+      const aspirationBoost = matchedDesiredCareer
+        ? cluster.careers.includes(matchedDesiredCareer.title)
+          ? 12
+          : matchedDesiredCareer.category &&
+              cluster.categories.includes(matchedDesiredCareer.category)
+            ? 6
+            : 0
+        : 0;
+
+      return {
+        clusterId,
+        ...cluster,
+        score: clampScore(baseScore + categoryBoost + tagBoost + aspirationBoost)
+      };
+    })
+    .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label));
+
 export default function App() {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [selectedSalary, setSelectedSalary] = useState("All");
@@ -306,7 +360,17 @@ export default function App() {
     ? getUserProfile(activeAnswers, onboardingProfile)
     : onboardingProfile;
 
+  const rankedClusters = getClusterScores({
+    careersWithTags,
+    userProfile,
+    selectedInterestObjects,
+    matchedDesiredCareer
+  });
+  const primaryCluster = rankedClusters[0] ?? null;
+  const primaryClusterCareerSet = new Set(primaryCluster?.careers ?? careersWithTags.map((career) => career.title));
+
   const recommendedCareers = careersWithTags
+    .filter((career) => primaryClusterCareerSet.has(career.title))
     .map((career) => {
       const recommendation = getRecommendationScore({
         career,
@@ -618,6 +682,11 @@ export default function App() {
                 <div>
                   <p className="eyebrow">Top Matches</p>
                   <h3>Top 3 careers that may fit you</h3>
+                  {primaryCluster && (
+                    <p className="cluster-summary">
+                      目前最像的職業群：{primaryCluster.label}
+                    </p>
+                  )}
                 </div>
                 <p className="results-note">
                   系統已綜合你的年齡層、興趣、嚮往職業
