@@ -359,10 +359,11 @@ export default function App() {
     matchedDesiredCareer
   });
   const primaryCluster = rankedClusters[0] ?? null;
-  const primaryClusterCareerSet = new Set(primaryCluster?.careers ?? careersWithTags.map((career) => career.title));
+  const primaryClusterCareerSet = new Set(
+    primaryCluster?.careers ?? careersWithTags.map((career) => career.title)
+  );
 
-  const recommendedCareers = careersWithTags
-    .filter((career) => primaryClusterCareerSet.has(career.title))
+  const scoredCareers = careersWithTags
     .map((career) => {
       const recommendation = getRecommendationScore({
         career,
@@ -371,10 +372,25 @@ export default function App() {
         matchedDesiredCareer
       });
 
-      return { ...career, ...recommendation };
+      const clusterBonus = primaryClusterCareerSet.has(career.title) ? 6 : 0;
+
+      return { ...career, ...recommendation, score: clampScore(recommendation.score + clusterBonus) };
     })
-    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title))
-    .slice(0, 3);
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+
+  const recommendedCareers = scoredCareers.reduce((selected, career) => {
+    if (selected.length >= 3) {
+      return selected;
+    }
+
+    const usedCategories = new Set(selected.map((item) => item.category));
+
+    if (usedCategories.has(career.category)) {
+      return selected;
+    }
+
+    return [...selected, career];
+  }, []);
 
   const filteredCareers = careersWithTags.filter((career) => {
     const matchesCategory =
