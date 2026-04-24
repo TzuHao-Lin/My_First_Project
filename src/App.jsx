@@ -9,7 +9,12 @@ import { categoryLabels } from "./data/categoryLabels";
 import { dimensionLabels, dimensions } from "./data/dimensions";
 import { filterLabels } from "./data/filterLabels";
 import { filterOptions } from "./data/filterOptions";
-import { ageGroups, clusterScenarioQuestions, interestOptions } from "./data/quizQuestions";
+import {
+  actionOptions,
+  ageGroups,
+  clusterScenarioQuestions,
+  workWithOptions
+} from "./data/quizQuestions";
 
 const clampScore = (score) => Math.min(100, Math.max(0, score));
 
@@ -252,7 +257,8 @@ export default function App() {
   const [search, setSearch] = useState("");
 
   const [selectedAgeGroup, setSelectedAgeGroup] = useState("");
-  const [selectedInterests, setSelectedInterests] = useState([]);
+  const [selectedWorkWith, setSelectedWorkWith] = useState("");
+  const [selectedAction, setSelectedAction] = useState("");
   const [careerDirection, setCareerDirection] = useState("unsure");
   const [desiredCareerInput, setDesiredCareerInput] = useState("");
   const [skipSituational, setSkipSituational] = useState(false);
@@ -270,8 +276,9 @@ export default function App() {
   );
 
   const selectedInterestObjects = useMemo(
-    () => interestOptions.filter((interest) => selectedInterests.includes(interest.id)),
-    [selectedInterests]
+    () =>
+      [workWithOptions.find((option) => option.id === selectedWorkWith), actionOptions.find((option) => option.id === selectedAction)].filter(Boolean),
+    [selectedWorkWith, selectedAction]
   );
 
   const selectedAgeObject = useMemo(
@@ -290,7 +297,8 @@ export default function App() {
 
   const prerequisitesReady =
     Boolean(selectedAgeGroup) &&
-    selectedInterests.length > 0 &&
+    Boolean(selectedWorkWith) &&
+    Boolean(selectedAction) &&
     (careerDirection === "unsure" || desiredCareerInput.trim().length > 0);
 
   const onboardingProfile = useMemo(() => {
@@ -413,7 +421,8 @@ export default function App() {
 
   const resetDiscoveryFlow = () => {
     setSelectedAgeGroup("");
-    setSelectedInterests([]);
+    setSelectedWorkWith("");
+    setSelectedAction("");
     setCareerDirection("unsure");
     setDesiredCareerInput("");
     setSkipSituational(false);
@@ -474,7 +483,6 @@ export default function App() {
                     type="button"
                   >
                     <strong>{ageGroup.label}</strong>
-                    <span>{ageGroup.description}</span>
                   </button>
                 ))}
               </div>
@@ -483,23 +491,19 @@ export default function App() {
             <article className="discovery-card">
               <div className="stage-header">
                 <span>Layer 2</span>
-                <h3>你現在比較有感的興趣是哪些？</h3>
+                <h3>你比較喜歡面對什麼？</h3>
               </div>
-              <p className="stage-note">建議先選 2 到 4 個，之後情境題會跟著調整。</p>
+              <p className="stage-note">先選一個你最常想面對的對象，這比先選科系或產業更直覺。</p>
               <div className="chip-grid">
-                {interestOptions.map((interest) => {
-                  const selected = selectedInterests.includes(interest.id);
+                {workWithOptions.map((interest) => {
+                  const selected = selectedWorkWith === interest.id;
 
                   return (
                     <button
                       className={selected ? "selected" : ""}
                       key={interest.id}
                       onClick={() => {
-                        setSelectedInterests((current) =>
-                          current.includes(interest.id)
-                            ? current.filter((id) => id !== interest.id)
-                            : [...current, interest.id]
-                        );
+                        setSelectedWorkWith(interest.id);
                         setSkipSituational(false);
                         setAnswers({});
                       }}
@@ -507,6 +511,35 @@ export default function App() {
                     >
                       <strong>{interest.label}</strong>
                       <span>{interest.description}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </article>
+
+            <article className="discovery-card">
+              <div className="stage-header">
+                <span>Layer 2B</span>
+                <h3>你比較喜歡做什麼？</h3>
+              </div>
+              <p className="stage-note">再選一個你做起來最有感的動作，這會幫系統區分商科、設計、科技、餐飲這些交叉方向。</p>
+              <div className="chip-grid">
+                {actionOptions.map((action) => {
+                  const selected = selectedAction === action.id;
+
+                  return (
+                    <button
+                      className={selected ? "selected" : ""}
+                      key={action.id}
+                      onClick={() => {
+                        setSelectedAction(action.id);
+                        setSkipSituational(false);
+                        setAnswers({});
+                      }}
+                      type="button"
+                    >
+                      <strong>{action.label}</strong>
+                      <span>{action.description}</span>
                     </button>
                   );
                 })}

@@ -25,70 +25,89 @@ export const ageGroups = [
   }
 ];
 
-export const interestOptions = [
+export const workWithOptions = [
   {
-    id: "health-helping",
-    label: "幫助人 / Health & Helping",
-    description: "醫療、心理、教育、照顧、陪伴",
-    categories: ["Healthcare", "Education", "Public Service"],
-    tags: ["people", "helping"],
-    scores: { people: 16, creativity: 4 }
+    id: "work-with-people",
+    label: "人",
+    description: "互動、陪伴、教學、服務、理解需求",
+    categories: ["Healthcare", "Education", "Public Service", "Hospitality", "Business"],
+    tags: ["people", "helping", "communication"],
+    scores: { people: 18, creativity: 4 }
   },
   {
-    id: "technology-building",
-    label: "科技系統 / Technology",
-    description: "程式、系統、資料、邏輯、數位工具",
-    categories: ["Technology", "Engineering"],
-    tags: ["technical", "analytical"],
+    id: "work-with-information",
+    label: "資訊 / 數據 / 邏輯",
+    description: "資料、規則、數字、系統、分析",
+    categories: ["Technology", "Science", "Business", "Law", "Engineering"],
+    tags: ["analytical", "technical", "detail"],
+    scores: { logic: 18, longLearning: 8 }
+  },
+  {
+    id: "work-with-creative-output",
+    label: "作品 / 內容 / 畫面",
+    description: "視覺、故事、品牌、設計、創作",
+    categories: ["Design", "Media", "Language"],
+    tags: ["creative", "design", "media", "writing"],
+    scores: { creativity: 18, people: 4 }
+  },
+  {
+    id: "work-with-real-things",
+    label: "真實物件 / 空間 / 食物 / 機器",
+    description: "料理、設備、建築、實體操作、現場物件",
+    categories: ["Engineering", "Hospitality", "Aviation", "Design"],
+    tags: ["hands_on", "hospitality", "engineering"],
+    scores: { logic: 8, creativity: 8, pressure: 4 }
+  }
+];
+
+export const actionOptions = [
+  {
+    id: "action-analyze",
+    label: "分析問題",
+    description: "拆解原因、找規律、做判斷",
+    categories: ["Technology", "Science", "Business", "Law"],
+    tags: ["analytical", "detail", "science"],
     scores: { logic: 18, longLearning: 6 }
   },
   {
-    id: "design-creative",
-    label: "設計創作 / Design & Creative",
-    description: "設計、內容、品牌、故事、視覺",
-    categories: ["Design", "Media"],
+    id: "action-help",
+    label: "幫助 / 陪伴",
+    description: "照顧人、支持人、讓人變得更好",
+    categories: ["Healthcare", "Education", "Public Service", "Hospitality"],
+    tags: ["people", "helping"],
+    scores: { people: 18, creativity: 4 }
+  },
+  {
+    id: "action-build",
+    label: "動手做",
+    description: "把東西做出來、測試、反覆練習",
+    categories: ["Engineering", "Hospitality", "Technology", "Aviation"],
+    tags: ["hands_on", "technical", "hospitality"],
+    scores: { logic: 10, creativity: 6, pressure: 4 }
+  },
+  {
+    id: "action-create",
+    label: "創作 / 設計",
+    description: "做出有感覺、有風格、好看的東西",
+    categories: ["Design", "Media", "Hospitality"],
     tags: ["creative", "design", "media"],
     scores: { creativity: 18, people: 4 }
   },
   {
-    id: "business-leadership",
-    label: "商業企劃 / Business",
-    description: "管理、企劃、創業、商業策略",
-    categories: ["Business"],
-    tags: ["business", "planning", "communication"],
+    id: "action-organize",
+    label: "規劃 / 帶方向",
+    description: "安排事情、推動進度、整合資源",
+    categories: ["Business", "Education", "Hospitality", "Public Service"],
+    tags: ["planning", "business", "communication"],
     scores: { people: 10, logic: 10, pressure: 4 }
   },
   {
-    id: "science-research",
-    label: "研究探索 / Science",
-    description: "研究、實驗、資料、找規律",
-    categories: ["Science", "Healthcare", "Technology"],
-    tags: ["science", "analytical", "long_study"],
-    scores: { logic: 16, longLearning: 14 }
-  },
-  {
-    id: "language-humanities",
-    label: "語言人文 / Language & Humanities",
-    description: "語言、文化、教學、溝通、法律",
-    categories: ["Language", "Education", "Law"],
-    tags: ["language", "communication", "writing"],
-    scores: { people: 10, creativity: 10, longLearning: 4 }
-  },
-  {
-    id: "public-impact",
-    label: "社會影響 / Public Impact",
-    description: "公共服務、政策、正義、安全",
-    categories: ["Public Service", "Law"],
-    tags: ["public_service", "high_pressure", "people"],
-    scores: { people: 12, pressure: 10, stability: 4 }
-  },
-  {
-    id: "hands-on-action",
-    label: "動手實作 / Hands-on",
-    description: "現場工作、機械、餐飲、實體操作",
-    categories: ["Engineering", "Hospitality", "Aviation"],
-    tags: ["hands_on", "technical", "hospitality"],
-    scores: { logic: 8, creativity: 6, pressure: 4 }
+    id: "action-express",
+    label: "表達 / 說明",
+    description: "把複雜內容講清楚，讓別人理解",
+    categories: ["Language", "Education", "Law", "Media", "Business"],
+    tags: ["communication", "language", "writing"],
+    scores: { people: 12, creativity: 8, logic: 4 }
   }
 ];
 
