@@ -27,19 +27,35 @@ export const ageGroups = [
 
 export const workWithOptions = [
   {
-    id: "work-with-people",
-    label: "人",
-    description: "互動、陪伴、教學、服務、理解需求",
-    categories: ["Healthcare", "Education", "Public Service", "Hospitality", "Business"],
-    tags: ["people", "helping", "communication"],
-    scores: { people: 18, creativity: 4 }
+    id: "work-with-care",
+    label: "人的需求 / 成長 / 照護",
+    description: "照顧、陪伴、教學、理解狀態、幫助人慢慢變好",
+    categories: ["Healthcare", "Education", "Public Service"],
+    tags: ["people", "helping", "education"],
+    scores: { people: 18, creativity: 4, longLearning: 2 }
   },
   {
-    id: "work-with-information",
-    label: "資訊 / 數據 / 邏輯",
-    description: "資料、規則、數字、系統、分析",
-    categories: ["Technology", "Science", "Business", "Law", "Engineering"],
-    tags: ["analytical", "technical", "detail"],
+    id: "work-with-business",
+    label: "商業 / 市場 / 數字",
+    description: "預算、資源、成果、商業判斷、機會和風險",
+    categories: ["Business"],
+    tags: ["business", "analytical", "communication"],
+    scores: { logic: 14, people: 6, stability: 4 }
+  },
+  {
+    id: "work-with-rules",
+    label: "規則 / 證據 / 公共議題",
+    description: "制度、法律、證據、公平、政策和社會影響",
+    categories: ["Law", "Public Service"],
+    tags: ["public_service", "analytical", "communication"],
+    scores: { logic: 16, people: 8, pressure: 4, stability: 4 }
+  },
+  {
+    id: "work-with-systems-data",
+    label: "系統 / 程式 / 資料",
+    description: "數位工具、資料分析、程式邏輯、系統問題",
+    categories: ["Technology"],
+    tags: ["technical", "analytical", "detail"],
     scores: { logic: 18, longLearning: 8 }
   },
   {
@@ -51,9 +67,9 @@ export const workWithOptions = [
     scores: { creativity: 18, people: 4 }
   },
   {
-    id: "work-with-food-space",
-    label: "食物 / 空間 / 真實體驗",
-    description: "料理、烘焙、空間、服務現場、被真實使用的東西",
+    id: "work-with-service-experience",
+    label: "服務體驗 / 食物 / 空間",
+    description: "料理、烘焙、接待、空間氛圍、現場被真實感受到的體驗",
     categories: ["Hospitality", "Design"],
     tags: ["hands_on", "hospitality", "design"],
     scores: { creativity: 10, people: 4, pressure: 4 }
@@ -62,9 +78,17 @@ export const workWithOptions = [
     id: "work-with-machines",
     label: "機器 / 設備 / 結構",
     description: "機器、裝置、建築、工程物件、系統設備",
-    categories: ["Engineering", "Aviation", "Technology"],
+    categories: ["Engineering", "Science"],
     tags: ["hands_on", "engineering", "technical"],
     scores: { logic: 12, pressure: 2, longLearning: 4 }
+  },
+  {
+    id: "work-with-aviation-control",
+    label: "飛行 / 移動系統 / 控制",
+    description: "飛機、航線、程序、安全、即時判斷和控制節奏",
+    categories: ["Aviation"],
+    tags: ["technical", "travel", "detail", "high_pressure"],
+    scores: { logic: 12, pressure: 10, stability: 2, longLearning: 4 }
   }
 ];
 
@@ -78,12 +102,28 @@ export const actionOptions = [
     scores: { logic: 18, longLearning: 6 }
   },
   {
-    id: "action-help",
-    label: "幫助 / 陪伴",
-    description: "照顧人、支持人、讓人變得更好",
-    categories: ["Healthcare", "Education", "Public Service", "Hospitality"],
-    tags: ["people", "helping"],
+    id: "action-precision",
+    label: "精準檢查 / 品質控管",
+    description: "確認細節、降低錯誤、把穩定度和安全顧好",
+    categories: ["Healthcare", "Science", "Business", "Technology", "Aviation", "Hospitality"],
+    tags: ["detail", "stable", "technical"],
+    scores: { logic: 14, stability: 12, pressure: 2 }
+  },
+  {
+    id: "action-care",
+    label: "照護 / 陪伴",
+    description: "支持、安撫、教學、讓人慢慢進步",
+    categories: ["Healthcare", "Education", "Public Service"],
+    tags: ["people", "helping", "education"],
     scores: { people: 18, creativity: 4 }
+  },
+  {
+    id: "action-service",
+    label: "服務 / 接待 / 顧現場",
+    description: "看現場節奏、回應需求、把體驗和流程顧好",
+    categories: ["Hospitality", "Business", "Aviation"],
+    tags: ["people", "hospitality", "communication"],
+    scores: { people: 14, pressure: 8, creativity: 4 }
   },
   {
     id: "action-build",
@@ -116,6 +156,14 @@ export const actionOptions = [
     categories: ["Language", "Education", "Law", "Media", "Business"],
     tags: ["communication", "language", "writing"],
     scores: { people: 12, creativity: 8, logic: 4 }
+  },
+  {
+    id: "action-persuade",
+    label: "說服 / 銷售 / 談判",
+    description: "影響別人、爭取支持、推動合作或成交",
+    categories: ["Business", "Law", "Hospitality", "Public Service"],
+    tags: ["communication", "business", "risk"],
+    scores: { people: 14, pressure: 6, creativity: 4, stability: -4 }
   }
 ];
 
@@ -406,15 +454,15 @@ export const clusterScenarioQuestions = {
     {
       id: "hospitality-routine",
       title: "工作節奏情境",
-      scenario: "有些人喜歡每天有變化和現場感，有些人喜歡重複打磨同一件事，把手感越做越穩。",
+      scenario: "餐飲裡不只有一種節奏。有些角色偏尖峰出餐、即時反應；有些角色偏配方、手感、反覆打磨，把穩定度做到很高。",
       prompt: "你比較像哪一種？",
       options: [
-        { text: "我喜歡變化、節奏和即時反應", value: "hospitality_dynamic", scores: { pressure: 8, creativity: 6, stability: -8 } },
-        { text: "我喜歡反覆練習，把穩定度做到很好", value: "hospitality_repeat", scores: { stability: 12, logic: 8, longLearning: 4 } }
+        { text: "我喜歡尖峰時段、出餐節奏和即時反應，比較像熱線廚房的感覺", value: "hospitality_dynamic", scores: { pressure: 10, creativity: 6, stability: -8 } },
+        { text: "我喜歡反覆練習、調整配方和手感，把穩定度做到很好，比較像烘焙或品質很穩的製作", value: "hospitality_repeat", scores: { stability: 14, logic: 8, longLearning: 4, creativity: 4 } }
       ]
     }
   ],
-  languageEducationTravel: [
+  languageEducation: [
     {
       id: "language-explain",
       title: "解釋與轉換情境",
@@ -428,7 +476,7 @@ export const clusterScenarioQuestions = {
     {
       id: "language-live",
       title: "即時應變情境",
-      scenario: "有些語言 / 教育 / 航空服務工作需要即時表達和應變，有些則可以慢慢準備、慢慢打磨。",
+      scenario: "有些語言 / 教育工作需要即時表達和臨場回應，有些則可以慢慢準備、慢慢打磨。",
       prompt: "你更適合哪種？",
       options: [
         { text: "即時反應沒關係，我可以邊想邊說", value: "language_live", scores: { pressure: 10, people: 10, creativity: 4 } },
@@ -438,7 +486,7 @@ export const clusterScenarioQuestions = {
     {
       id: "language-role",
       title: "工作對象情境",
-      scenario: "這個職業群裡，有些工作偏教學和陪伴成長，有些偏翻譯 / 口譯 / 服務不同文化背景的人。",
+      scenario: "這個職業群裡，有些工作偏教學和陪伴成長，有些偏翻譯 / 口譯 / 文字與跨文化溝通。",
       prompt: "你更靠近哪一種？",
       options: [
         { text: "我喜歡教、帶人、看見別人慢慢懂", value: "language_teach", scores: { people: 16, stability: 4, creativity: 4 } },
@@ -448,11 +496,53 @@ export const clusterScenarioQuestions = {
     {
       id: "language-environment",
       title: "工作畫面情境",
-      scenario: "未來一天可能是在教室、會議、機場、服務現場，或是在文字和內容之間來回切換。",
+      scenario: "未來一天可能是在教室、會議、文字內容之間來回切換，也可能是在跨文化溝通情境裡幫助別人理解。",
       prompt: "哪種畫面比較吸引你？",
       options: [
         { text: "和人互動、引導、服務或即時協助", value: "language_people_scene", scores: { people: 14, pressure: 4 } },
         { text: "文字、內容、語意、細節和精準度", value: "language_text_scene", scores: { logic: 10, creativity: 8, stability: 4 } }
+      ]
+    }
+  ],
+  aviationOperations: [
+    {
+      id: "aviation-procedure",
+      title: "程序與安全情境",
+      scenario: "在航空世界裡，很多事不能只靠感覺，而是要照程序、守規則，因為小錯誤也可能放大成大問題。",
+      prompt: "你對這種工作感覺如何？",
+      options: [
+        { text: "我能接受，程序和安全感本來就很重要", value: "aviation_procedure", scores: { logic: 14, stability: 10, pressure: 4 } },
+        { text: "我比較想保有彈性，不喜歡一直被流程綁住", value: "aviation_flex", scores: { creativity: 8, stability: -8 } }
+      ]
+    },
+    {
+      id: "aviation-control",
+      title: "即時控制情境",
+      scenario: "你需要在有限時間內整合資訊、做判斷，並且讓整個系統保持安全和節奏。",
+      prompt: "哪一種比較像你？",
+      options: [
+        { text: "我可以在壓力下維持專注，照步驟做出判斷", value: "aviation_control", scores: { pressure: 16, logic: 12, stability: 4 } },
+        { text: "我比較不喜歡一直在高壓下做即時決定", value: "aviation_low_pressure", scores: { pressure: -12, stability: 6 } }
+      ]
+    },
+    {
+      id: "aviation-role",
+      title: "工作角色情境",
+      scenario: "同樣在航空裡，有些角色偏飛行 / 控制 / 安全決策，有些更偏乘客服務、協調和現場應變。",
+      prompt: "你更接近哪一種？",
+      options: [
+        { text: "我喜歡控制系統、程序、判斷和專注感", value: "aviation_systems", scores: { logic: 16, pressure: 8, people: -4 } },
+        { text: "我喜歡現場服務、溝通和即時照顧乘客體驗", value: "aviation_service", scores: { people: 14, pressure: 6, creativity: 4 } }
+      ]
+    },
+    {
+      id: "aviation-rhythm",
+      title: "工作節奏情境",
+      scenario: "這條路常常有不固定時段、長時間專注和高標準要求，不一定是規律的 9-to-5。",
+      prompt: "你的感覺比較像？",
+      options: [
+        { text: "如果工作本身有吸引力，我可以接受這種節奏", value: "aviation_variable", scores: { pressure: 8, stability: -6, longLearning: 4 } },
+        { text: "我會比較希望工作規律、可預測、少一點波動", value: "aviation_regular", scores: { stability: 12, pressure: -4 } }
       ]
     }
   ]

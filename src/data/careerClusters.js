@@ -98,21 +98,29 @@ export const careerClusters = {
       "餐廳經理 / Restaurant Manager"
     ]
   },
-  languageEducationTravel: {
-    label: "Language, Education & Travel",
-    description: "語言、教學、跨文化溝通與航空服務。",
-    categories: ["Language", "Education", "Aviation"],
-    tags: ["language", "education", "communication", "travel"],
+  languageEducation: {
+    label: "Language & Education",
+    description: "語言、教學、跨文化溝通與學習設計。",
+    categories: ["Language", "Education"],
+    tags: ["language", "education", "communication", "writing"],
     careers: [
-      "機師 / Pilot",
       "翻譯員 / Translator",
       "教師 / Teacher",
       "教育顧問 / Education Consultant",
       "教育科技設計師 / EdTech Designer",
-      "空服員 / Flight Attendant",
-      "航管員 / Air Traffic Controller",
       "口譯員 / Interpreter",
       "語言教師 / Language Teacher"
+    ]
+  },
+  aviationOperations: {
+    label: "Aviation & Operations",
+    description: "飛行、航管、空中服務、即時控制與運輸節奏。",
+    categories: ["Aviation"],
+    tags: ["technical", "travel", "high_pressure", "communication", "detail"],
+    careers: [
+      "機師 / Pilot",
+      "空服員 / Flight Attendant",
+      "航管員 / Air Traffic Controller"
     ]
   }
 };
