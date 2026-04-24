@@ -9,7 +9,7 @@ import { categoryLabels } from "./data/categoryLabels";
 import { dimensionLabels, dimensions } from "./data/dimensions";
 import { filterLabels } from "./data/filterLabels";
 import { filterOptions } from "./data/filterOptions";
-import { ageGroups, interestOptions, scenarioQuestionBank } from "./data/quizQuestions";
+import { ageGroups, clusterScenarioQuestions, interestOptions } from "./data/quizQuestions";
 
 const clampScore = (score) => Math.min(100, Math.max(0, score));
 
@@ -145,33 +145,6 @@ const findMatchedCareer = (input, careersWithTags) => {
     careersWithTags.find((career) => normalizeText(career.title).includes(normalized)) ||
     null
   );
-};
-
-const getSuggestedQuestions = (selectedInterestObjects, matchedCareer, selectedAgeGroupId) => {
-  const selectedCategories = new Set(selectedInterestObjects.flatMap((interest) => interest.categories));
-  const selectedTags = new Set(selectedInterestObjects.flatMap((interest) => interest.tags));
-
-  if (matchedCareer) {
-    selectedCategories.add(matchedCareer.category);
-    matchedCareer.tags.forEach((tag) => selectedTags.add(tag));
-  }
-
-  const ageWeight =
-    selectedAgeGroupId === "middle-school" ? 0.6 : selectedAgeGroupId === "adult" ? 1.1 : 1;
-
-  return scenarioQuestionBank
-    .map((question, index) => {
-      const categoryHits = question.focusCategories.filter((category) =>
-        selectedCategories.has(category)
-      ).length;
-      const tagHits = question.focusTags.filter((tag) => selectedTags.has(tag)).length;
-      const relevance = (categoryHits * 2 + tagHits) * ageWeight;
-
-      return { ...question, relevance, index };
-    })
-    .sort((a, b) => b.relevance - a.relevance || a.index - b.index)
-    .slice(0, 6)
-    .sort((a, b) => a.index - b.index);
 };
 
 const getRecommendationScore = ({
@@ -320,20 +293,6 @@ export default function App() {
     selectedInterests.length > 0 &&
     (careerDirection === "unsure" || desiredCareerInput.trim().length > 0);
 
-  const activeQuestions = useMemo(
-    () =>
-      prerequisitesReady
-        ? getSuggestedQuestions(selectedInterestObjects, matchedDesiredCareer, selectedAgeGroup)
-        : [],
-    [prerequisitesReady, selectedInterestObjects, matchedDesiredCareer, selectedAgeGroup]
-  );
-
-  const activeAnswers = Object.fromEntries(
-    Object.entries(answers).filter(([id]) => activeQuestions.some((question) => question.id === id))
-  );
-  const answeredCount = Object.keys(activeAnswers).length;
-  const shouldAskSituational = !(skipSituational && matchedDesiredCareer);
-
   const onboardingProfile = useMemo(() => {
     let profile = createNeutralProfile();
 
@@ -351,6 +310,28 @@ export default function App() {
 
     return profile;
   }, [matchedDesiredCareer, selectedAgeObject, selectedInterestObjects]);
+
+  const discoveryRankedClusters = getClusterScores({
+    careersWithTags,
+    userProfile: onboardingProfile,
+    selectedInterestObjects,
+    matchedDesiredCareer
+  });
+  const discoveryPrimaryCluster = discoveryRankedClusters[0] ?? null;
+
+  const activeQuestions = useMemo(() => {
+    if (!prerequisitesReady || !discoveryPrimaryCluster) {
+      return [];
+    }
+
+    return clusterScenarioQuestions[discoveryPrimaryCluster.clusterId] ?? [];
+  }, [prerequisitesReady, discoveryPrimaryCluster]);
+
+  const activeAnswers = Object.fromEntries(
+    Object.entries(answers).filter(([id]) => activeQuestions.some((question) => question.id === id))
+  );
+  const answeredCount = Object.keys(activeAnswers).length;
+  const shouldAskSituational = !(skipSituational && matchedDesiredCareer);
 
   const quizComplete =
     prerequisitesReady &&
@@ -628,8 +609,13 @@ export default function App() {
               ) : shouldAskSituational ? (
                 <>
                   <p className="stage-note">
-                    這一組題目是根據你的年齡層、興趣和目前嚮往職業挑出來的，所以每個人看到的不一定一樣。
+                    第四層現在不再用共用題庫，而是先判斷你目前最像哪個職業群，再只問這個職業群最有區分力的 4 題。
                   </p>
+                  {discoveryPrimaryCluster && (
+                    <p className="stage-cluster-hint">
+                      目前暫時判斷最像：{discoveryPrimaryCluster.label}
+                    </p>
+                  )}
                   <div className="quiz-grid">
                     {activeQuestions.map((question) => (
                       <article className="quiz-question" key={question.id}>

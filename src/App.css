@@ -140,6 +140,7 @@ h1 {
 .stage-note,
 .match-hint,
 .results-note,
+.stage-cluster-hint,
 .scenario-title,
 .scenario-text {
   margin: 0;
@@ -152,10 +153,16 @@ h1 {
 
 .stage-note,
 .match-hint,
-.results-note {
+.results-note,
+.stage-cluster-hint {
   margin-top: 10px;
   color: #c8d3e1;
   line-height: 1.6;
+}
+
+.stage-cluster-hint {
+  color: #9bd0ff;
+  font-weight: 700;
 }
 
 .match-hint.warning {
