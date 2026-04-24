@@ -589,6 +589,27 @@ export default function App() {
     })
     .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
 
+  const allScoredCareers = careersWithTags
+    .map((career) => {
+      const recommendation = getRecommendationScore({
+        career,
+        userProfile,
+        selectedInterestObjects,
+        matchedDesiredCareer
+      });
+
+      const clusterBonus = recommendationClusters.reduce((sum, cluster, index) => {
+        if (!cluster.careers.includes(career.title)) {
+          return sum;
+        }
+
+        return sum + (index === 0 ? 6 : 3);
+      }, 0);
+
+      return { ...career, ...recommendation, score: clampScore(recommendation.score + clusterBonus) };
+    })
+    .sort((a, b) => b.score - a.score || a.title.localeCompare(b.title));
+
   const recommendedCareers = scoredCareers.reduce((selected, career) => {
     if (selected.length >= 3) {
       return selected;
@@ -604,7 +625,14 @@ export default function App() {
   }, []);
   const finalRecommendedCareers = [
     ...recommendedCareers,
-    ...scoredCareers.filter((career) => !recommendedCareers.some((item) => item.title === career.title))
+    ...allScoredCareers.filter(
+      (career) =>
+        !recommendedCareers.some((item) => item.title === career.title) &&
+        !recommendedCareers.some((item) => item.category === career.category)
+    ),
+    ...allScoredCareers.filter(
+      (career) => !recommendedCareers.some((item) => item.title === career.title)
+    )
   ].slice(0, 3);
 
   const filteredCareers = careersWithTags.filter((career) => {
