@@ -26,6 +26,7 @@ export const careerTags = {
   "社工 / Social Worker": ["people", "helping", "communication", "high_pressure", "public_service", "stable"],
   "警察 / Police Officer": ["people", "high_pressure", "hands_on", "public_service", "stable"],
   "廚師 / Chef": ["creative", "hands_on", "high_pressure", "hospitality", "fast_change"],
+  "烘焙師 / Baker & Pastry Chef": ["creative", "hands_on", "detail", "hospitality", "stable"],
   "飯店經理 / Hotel Manager": ["people", "communication", "high_pressure", "hospitality", "business", "planning"],
   "資料科學家 / Data Scientist": ["analytical", "independent", "technical", "long_study", "science", "stable"],
   "產品經理 / Product Manager": ["people", "communication", "planning", "business", "fast_change", "high_pressure", "analytical"],

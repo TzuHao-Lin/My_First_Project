@@ -378,6 +378,20 @@ export const careers = [
     ]
   },
   {
+    title: "烘焙師 / Baker & Pastry Chef",
+    category: "Hospitality",
+    description: "製作麵包、甜點與烘焙產品，重視配方、細節與穩定品質。",
+    traits: ["細心", "耐心", "喜歡動手做"],
+    path: "Baking practice / pastry training -> bakery experience -> baker or pastry roles",
+    explore: "Bake breads or desserts, test recipes, study pastry basics, observe bakery operations",
+    fit: "適合喜歡精準配方、重複練習，並願意把作品慢慢打磨到穩定的人。",
+    avoid: "如果你不喜歡早起、反覆修正、精準秤量或在高峰時段趕出品質，可能不太適合。",
+    questions: [
+      "你會願意為了讓成品更穩定，反覆調整同一個配方嗎？",
+      "你喜歡把細節做到很精準，讓每次作品都接近理想狀態嗎？"
+    ]
+  },
+  {
     title: "飯店經理 / Hotel Manager",
     category: "Hospitality",
     description: "管理住宿服務、顧客體驗與飯店營運。",

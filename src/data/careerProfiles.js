@@ -26,6 +26,7 @@ export const careerProfiles = {
   "社工 / Social Worker": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Stable" },
   "警察 / Police Officer": { salary: "Medium", educationLevel: "License/Certification", workStyle: "Hands-on", pressureLevel: "High", stability: "Stable" },
   "廚師 / Chef": { salary: "Medium", educationLevel: "Short Training", workStyle: "Hands-on", pressureLevel: "High", stability: "Variable" },
+  "烘焙師 / Baker & Pastry Chef": { salary: "Medium", educationLevel: "Short Training", workStyle: "Hands-on", pressureLevel: "Medium", stability: "Stable" },
   "飯店經理 / Hotel Manager": { salary: "Medium", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },
   "資料科學家 / Data Scientist": { salary: "Very High", educationLevel: "Graduate", workStyle: "Desk-based", pressureLevel: "Medium", stability: "Stable" },
   "產品經理 / Product Manager": { salary: "High", educationLevel: "Bachelor", workStyle: "People-focused", pressureLevel: "High", stability: "Variable" },

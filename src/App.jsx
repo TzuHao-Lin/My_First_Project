@@ -193,17 +193,26 @@ const getRecommendationScore = ({
     return sum + overlap;
   }, 0);
 
-  const aspirationBoost =
-    matchedDesiredCareer && career.title === matchedDesiredCareer.title
-      ? 10
-      : matchedDesiredCareer && career.category === matchedDesiredCareer.category
-        ? 5
-        : 0;
+  const desiredCareerSimilarityBoost = (() => {
+    if (!matchedDesiredCareer) {
+      return 0;
+    }
+
+    if (career.title === matchedDesiredCareer.title) {
+      return 20;
+    }
+
+    const sharedTags = career.tags.filter((tag) => matchedDesiredCareer.tags.includes(tag)).length;
+    const sameCategory = career.category === matchedDesiredCareer.category ? 6 : 0;
+    const sameWorkStyle = career.workStyle === matchedDesiredCareer.workStyle ? 2 : 0;
+
+    return Math.min(14, sharedTags * 2 + sameCategory + sameWorkStyle);
+  })();
 
   return {
     closestDimensions: getClosestDimensions(userProfile, fitProfile),
     fitProfile,
-    score: clampScore(matchScore + categoryBoost + tagBoost + aspirationBoost)
+    score: clampScore(matchScore + categoryBoost + tagBoost + desiredCareerSimilarityBoost)
   };
 };
 
