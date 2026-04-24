@@ -114,6 +114,135 @@ h1 {
   line-height: 1.7;
 }
 
+.discovery-stack {
+  display: grid;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.discovery-card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 22px;
+  padding: 18px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.stage-header span {
+  display: inline-block;
+  color: #9bd0ff;
+  font-size: 0.78rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.stage-header h3,
+.stage-note,
+.match-hint,
+.results-note,
+.scenario-title,
+.scenario-text {
+  margin: 0;
+}
+
+.stage-header h3 {
+  margin-top: 8px;
+  font-size: 1.1rem;
+}
+
+.stage-note,
+.match-hint,
+.results-note {
+  margin-top: 10px;
+  color: #c8d3e1;
+  line-height: 1.6;
+}
+
+.match-hint.warning {
+  color: #ffd0b5;
+}
+
+.choice-grid,
+.chip-grid,
+.direction-toggle {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.choice-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.chip-grid {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.direction-toggle {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.choice-grid button,
+.chip-grid button,
+.direction-toggle button,
+.secondary {
+  display: grid;
+  gap: 6px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  border-radius: 16px;
+  padding: 13px 14px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #f8fbff;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+}
+
+.choice-grid button strong,
+.chip-grid button strong {
+  font-size: 0.98rem;
+}
+
+.choice-grid button span,
+.chip-grid button span {
+  color: #c8d3e1;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.choice-grid button.selected,
+.chip-grid button.selected,
+.direction-toggle button.selected,
+.secondary.active {
+  border-color: #9bd0ff;
+  background: #dff0ff;
+  color: #172033;
+}
+
+.choice-grid button.selected span,
+.chip-grid button.selected span {
+  color: #40506a;
+}
+
+.career-intent-box {
+  display: grid;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.career-intent-box .search-box {
+  max-width: none;
+}
+
+.career-intent-box .search-box span {
+  color: #f8fbff;
+}
+
+.recommendation-placeholder.compact {
+  margin-top: 14px;
+  padding: 16px;
+}
+
 .quiz-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -131,6 +260,20 @@ h1 {
 .quiz-question h3 {
   margin: 0 0 14px;
   font-size: 1rem;
+}
+
+.scenario-title {
+  color: #9bd0ff;
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.scenario-text {
+  margin: 8px 0 12px;
+  color: #d6dfeb;
+  line-height: 1.65;
 }
 
 .quiz-options {
@@ -190,6 +333,18 @@ h1 {
 .recommendations h3 {
   margin-top: 6px;
   font-size: 1.4rem;
+}
+
+.recommendations-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.results-note {
+  max-width: 360px;
+  text-align: right;
 }
 
 .recommendation-grid {
@@ -544,12 +699,25 @@ h1 {
 }
 
 @media (max-width: 860px) {
+  .choice-grid,
+  .chip-grid,
+  .direction-toggle,
   .steps,
   .quiz-grid,
   .filter-grid,
   .career-grid,
   .recommendation-grid {
     grid-template-columns: 1fr;
+  }
+
+  .recommendations-header {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .results-note {
+    max-width: none;
+    text-align: left;
   }
 
   .hero {
