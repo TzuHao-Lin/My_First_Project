@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { actionPlans } from "./data/actionPlans";
+import { actionPlans, ageActionPlans } from "./data/actionPlans";
 import { careers } from "./data/careers";
 import { careerProfiles } from "./data/careerProfiles";
 import { careerTags } from "./data/careerTags";
@@ -242,6 +242,7 @@ export default function App() {
     () => ageGroups.find((ageGroup) => ageGroup.id === selectedAgeGroup) ?? null,
     [selectedAgeGroup]
   );
+  const selectedAgePlan = selectedAgeGroup ? ageActionPlans[selectedAgeGroup] ?? null : null;
 
   const matchedDesiredCareer = useMemo(
     () =>
@@ -663,6 +664,26 @@ export default function App() {
                       <p>{career.explore}</p>
                     </div>
 
+                    {selectedAgePlan && (
+                      <div className="age-plan-box">
+                        <p className="recommendation-label">{selectedAgePlan.title}</p>
+                        <div className="age-plan-list">
+                          <div className="age-plan-item">
+                            <span>Focus</span>
+                            <p>{selectedAgePlan.focus}</p>
+                          </div>
+                          <div className="age-plan-item">
+                            <span>This week</span>
+                            <p>{selectedAgePlan.thisWeek}</p>
+                          </div>
+                          <div className="age-plan-item">
+                            <span>This month</span>
+                            <p>{selectedAgePlan.thisMonth}</p>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="action-list">
                       {Object.entries(actionPlans[career.category] ?? {}).map(([label, text]) => (
                         <div className="action-item" key={label}>
@@ -671,6 +692,13 @@ export default function App() {
                         </div>
                       ))}
                     </div>
+
+                    {selectedAgePlan && (
+                      <div className="recommendation-caution">
+                        <p className="recommendation-label">What not to rush</p>
+                        <p>{selectedAgePlan.avoid}</p>
+                      </div>
+                    )}
                   </article>
                 ))}
               </div>
