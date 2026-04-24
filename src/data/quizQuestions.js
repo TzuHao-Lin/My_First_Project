@@ -343,8 +343,8 @@ export const clusterScenarioQuestions = {
       scenario: "你要決定一個活動、產品或計畫接下來要往哪裡走，但資訊不完整，還要考慮資源和結果。",
       prompt: "你比較像哪一種？",
       options: [
-        { text: "我喜歡先收集資訊、比較選項，再做決定", value: "business_strategy", scores: { logic: 14, people: 6, stability: 4 } },
-        { text: "我比較想直接試一版，從結果回來修", value: "business_test_fast", scores: { pressure: 8, creativity: 6, stability: -4 } }
+        { text: "我喜歡先收集資訊、比較選項，再做決定，比較像分析和策略規劃", value: "business_strategy", scores: { logic: 14, people: 6, stability: 4 } },
+        { text: "我比較想先試一版、推進看看，再從結果回來修，比較像營運和產品推進", value: "business_test_fast", scores: { pressure: 8, creativity: 6, stability: -4, people: 4 } }
       ]
     },
     {
@@ -353,8 +353,8 @@ export const clusterScenarioQuestions = {
       scenario: "你需要說服不同的人支持你的想法，有些人重數字，有些人重感受，有些人只在意結果。",
       prompt: "你對這種事情的感覺？",
       options: [
-        { text: "我覺得有挑戰，但蠻有成就感", value: "business_persuade", scores: { people: 16, creativity: 6, pressure: 4 } },
-        { text: "我比較喜歡自己把分析做好，不想一直協調", value: "business_analysis", scores: { logic: 14, people: -8, stability: 4 } }
+        { text: "我覺得有挑戰，但蠻有成就感，比較像業務、行銷、產品或創業", value: "business_persuade", scores: { people: 16, creativity: 6, pressure: 4 } },
+        { text: "我比較喜歡把分析、數字和判斷做好，再讓決策更清楚，比較像財務或商業分析", value: "business_analysis", scores: { logic: 14, people: -4, stability: 4 } }
       ]
     },
     {
@@ -363,8 +363,8 @@ export const clusterScenarioQuestions = {
       scenario: "有些商業方向比較穩，有些方向更有機會但更不確定，可能要邊做邊改。",
       prompt: "你比較偏哪一種？",
       options: [
-        { text: "我想要穩一點、可預測一點", value: "business_stable", scores: { stability: 16, pressure: -4 } },
-        { text: "我可以接受變化，換來更大的可能", value: "business_dynamic", scores: { pressure: 6, creativity: 6, stability: -12 } }
+        { text: "我想要穩一點、可預測一點，比較像財務、會計或成熟營運", value: "business_stable", scores: { stability: 16, pressure: -4, logic: 4 } },
+        { text: "我可以接受變化，換來更大的可能，比較像新創、業務開發或成長型角色", value: "business_dynamic", scores: { pressure: 6, creativity: 6, stability: -12, people: 4 } }
       ]
     },
     {
@@ -373,8 +373,8 @@ export const clusterScenarioQuestions = {
       scenario: "同樣是商業工作，有些更偏數字和判斷，有些更偏企劃、溝通和把事情推動起來。",
       prompt: "你更喜歡哪種成果？",
       options: [
-        { text: "清楚的分析、數據、預算和決策依據", value: "business_numbers", scores: { logic: 16, stability: 6 } },
-        { text: "一個被推動起來的活動、產品或合作", value: "business_drive", scores: { people: 12, creativity: 6, pressure: 4 } }
+        { text: "清楚的分析、數據、預算和決策依據，比較像會計、金融分析或策略面", value: "business_numbers", scores: { logic: 16, stability: 6 } },
+        { text: "一個被推動起來的活動、產品或合作，比較像行銷、產品、業務或管理面", value: "business_drive", scores: { people: 12, creativity: 6, pressure: 4, planning: 0 } }
       ]
     }
   ],
@@ -385,8 +385,8 @@ export const clusterScenarioQuestions = {
       scenario: "你看到一件事情明顯不公平，但要處理它，不能只靠情緒，還需要證據、規則和程序。",
       prompt: "你比較被哪一部分吸引？",
       options: [
-        { text: "我喜歡釐清證據、規則和邏輯", value: "law_logic", scores: { logic: 18, stability: 6, longLearning: 4 } },
-        { text: "我更在意人受到的影響，以及怎麼實際改善", value: "law_people_impact", scores: { people: 14, pressure: 6, creativity: 4 } }
+        { text: "我喜歡釐清證據、規則和邏輯，比較像法律、法務或政策分析", value: "law_logic", scores: { logic: 18, stability: 6, longLearning: 4 } },
+        { text: "我更在意人受到的影響，以及怎麼實際改善，比較像社工、第一線公共服務或倡議", value: "law_people_impact", scores: { people: 14, pressure: 6, creativity: 4 } }
       ]
     },
     {
@@ -395,8 +395,8 @@ export const clusterScenarioQuestions = {
       scenario: "你可能需要在衝突、危機或立場對立的情境中做決定，而且很多人都會看你的判斷。",
       prompt: "你對這種角色的感覺？",
       options: [
-        { text: "我可以承受這種壓力，只要知道自己有依據", value: "law_high_pressure", scores: { pressure: 16, stability: 4, logic: 6 } },
-        { text: "我會希望更多時間緩衝，不想常常處在衝突裡", value: "law_low_conflict", scores: { pressure: -10, stability: 8 } }
+        { text: "我可以承受這種壓力，只要知道自己有依據，比較能接受法庭、執法或危機決策感", value: "law_high_pressure", scores: { pressure: 16, stability: 4, logic: 6 } },
+        { text: "我希望更多時間準備和消化，比較適合研究、政策、法務或長期陪伴型公共工作", value: "law_low_conflict", scores: { pressure: -10, stability: 8, logic: 4 } }
       ]
     },
     {
@@ -405,8 +405,8 @@ export const clusterScenarioQuestions = {
       scenario: "你需要把一個複雜議題講清楚，讓別人理解你的立場，甚至願意支持你。",
       prompt: "你比較像哪一種？",
       options: [
-        { text: "我喜歡把複雜的事講清楚，和人辯論也可以", value: "law_speak", scores: { people: 14, creativity: 6, pressure: 4 } },
-        { text: "我比較喜歡先整理資料和論點，幕後準備也可以", value: "law_prepare", scores: { logic: 14, people: -6, stability: 4 } }
+        { text: "我喜歡把複雜的事講清楚，和人辯論也可以，比較像出庭、倡議或第一線溝通", value: "law_speak", scores: { people: 14, creativity: 6, pressure: 4 } },
+        { text: "我比較喜歡先整理資料和論點，幕後準備也可以，比較像研究、法務和政策準備", value: "law_prepare", scores: { logic: 14, people: -4, stability: 4 } }
       ]
     },
     {
@@ -415,8 +415,8 @@ export const clusterScenarioQuestions = {
       scenario: "這個世界裡有些角色偏政策、法律和制度，有些偏第一線服務、危機處理和直接介入。",
       prompt: "你更靠近哪一種？",
       options: [
-        { text: "制度、政策、法律、分析", value: "law_policy", scores: { logic: 16, longLearning: 6 } },
-        { text: "第一線服務、即時反應、直接保護或協助人", value: "law_frontline", scores: { people: 12, pressure: 10, stability: 2 } }
+        { text: "制度、政策、法律、分析，比較像法務、律師、政策分析或檢察體系", value: "law_policy", scores: { logic: 16, longLearning: 6 } },
+        { text: "第一線服務、即時反應、直接保護或協助人，比較像警消、社工或現場公共服務", value: "law_frontline", scores: { people: 12, pressure: 10, stability: 2 } }
       ]
     }
   ],
@@ -424,41 +424,41 @@ export const clusterScenarioQuestions = {
     {
       id: "hospitality-rush",
       title: "尖峰時段情境",
-      scenario: "客人很多、節奏很快、事情同時發生。你需要在壓力下保持速度，也不能讓體驗崩掉。",
+      scenario: "服務現場常常會遇到尖峰時段，但同一個產業裡，有些角色更常站在第一線即時反應，有些角色更重視備料、節奏安排和穩定出品質。",
       prompt: "你比較能接受哪種感覺？",
       options: [
-        { text: "我可以在忙碌中保持節奏，甚至會覺得有成就感", value: "hospitality_peak", scores: { pressure: 16, people: 8, creativity: 4 } },
-        { text: "我更喜歡穩穩來，不太想每天都像打仗", value: "hospitality_steady", scores: { stability: 10, pressure: -8 } }
+        { text: "我可以在忙碌中保持節奏，當下處理很多事也會覺得有成就感", value: "hospitality_peak", scores: { pressure: 16, people: 8, creativity: 4 } },
+        { text: "我比較喜歡先把流程和品質穩住，不想一直靠臨場救火", value: "hospitality_steady", scores: { stability: 12, logic: 6, pressure: -4 } }
       ]
     },
     {
       id: "hospitality-craft",
       title: "作品與品質情境",
-      scenario: "有些餐飲 / 服務工作重創意和現場感，有些重標準流程和穩定品質。",
+      scenario: "這個領域裡，有些工作更重『做出讓人驚喜的體驗』，有些則更重『把標準和品質穩穩做到位』。",
       prompt: "你更喜歡哪一種？",
       options: [
         { text: "我喜歡創造新味道、新體驗或新的呈現方式", value: "hospitality_creative", scores: { creativity: 16, pressure: 4, stability: -4 } },
-        { text: "我喜歡把品質做到穩、流程做到熟", value: "hospitality_consistency", scores: { stability: 14, logic: 8 } }
+        { text: "我喜歡把品質做到穩、流程做到熟，讓每次都很可靠", value: "hospitality_consistency", scores: { stability: 14, logic: 8, creativity: 2 } }
       ]
     },
     {
       id: "hospitality-role",
       title: "工作角色情境",
-      scenario: "同一個服務世界裡，有些工作偏廚房 / 製作 / 配方，有些偏現場溝通、客人體驗和流程管理。",
+      scenario: "同一個服務世界裡，有些工作偏廚房 / 製作 / 配方，有些偏現場溝通、接待協調、活動或住宿流程管理。",
       prompt: "你更靠近哪一種？",
       options: [
-        { text: "做東西、動手、看作品真的完成", value: "hospitality_make", scores: { logic: 8, creativity: 8, people: -2 } },
-        { text: "現場應變、和人互動、把整體體驗顧好", value: "hospitality_host", scores: { people: 14, pressure: 6, creativity: 4 } }
+        { text: "做東西、動手、調整配方或把作品真的完成", value: "hospitality_make", scores: { logic: 8, creativity: 8, people: -2, stability: 2 } },
+        { text: "現場應變、和人互動、把整體體驗和流程顧好", value: "hospitality_host", scores: { people: 14, pressure: 6, creativity: 4, logic: 4 } }
       ]
     },
     {
       id: "hospitality-routine",
       title: "工作節奏情境",
-      scenario: "餐飲裡不只有一種節奏。有些角色偏尖峰出餐、即時反應；有些角色偏配方、手感、反覆打磨，把穩定度做到很高。",
+      scenario: "餐飲和服務裡不只有一種節奏。有些角色偏尖峰出餐、即時反應；有些角色偏配方、手感、反覆打磨，把穩定度做到很高。",
       prompt: "你比較像哪一種？",
       options: [
-        { text: "我喜歡尖峰時段、出餐節奏和即時反應，比較像熱線廚房的感覺", value: "hospitality_dynamic", scores: { pressure: 10, creativity: 6, stability: -8 } },
-        { text: "我喜歡反覆練習、調整配方和手感，把穩定度做到很好，比較像烘焙或品質很穩的製作", value: "hospitality_repeat", scores: { stability: 14, logic: 8, longLearning: 4, creativity: 4 } }
+        { text: "我喜歡尖峰時段、出餐節奏和即時反應，比較像熱線廚房或高互動現場", value: "hospitality_dynamic", scores: { pressure: 10, creativity: 6, stability: -8, people: 4 } },
+        { text: "我喜歡反覆練習、調整配方和手感，把穩定度做到很好，比較像烘焙或高品質製作", value: "hospitality_repeat", scores: { stability: 14, logic: 8, longLearning: 4, creativity: 4 } }
       ]
     }
   ],

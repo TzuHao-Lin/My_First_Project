@@ -203,6 +203,8 @@ const getClusterScores = ({
 }) =>
   Object.entries(careerClusters)
     .map(([clusterId, cluster]) => {
+      const selectedInterestIds = new Set(selectedInterestObjects.map((interest) => interest.id));
+      const hasInterest = (interestId) => selectedInterestIds.has(interestId);
       const clusterCareers = careersWithTags.filter((career) => cluster.careers.includes(career.title));
 
       const topCareerMatches = clusterCareers
@@ -231,6 +233,85 @@ const getClusterScores = ({
         return sum + overlap * 3;
       }, 0);
 
+      const comboBoost = (() => {
+        if (clusterId === "hospitalityService") {
+          return (
+            (hasInterest("work-with-service-experience") ? 8 : 0) +
+            (hasInterest("action-build") ? 4 : 0) +
+            (hasInterest("action-create") ? 5 : 0) +
+            (hasInterest("action-precision") ? 4 : 0) +
+            (hasInterest("action-service") ? 4 : 0)
+          );
+        }
+
+        if (clusterId === "designCreativeMedia") {
+          return (
+            (hasInterest("work-with-creative-output") ? 8 : 0) +
+            (hasInterest("action-create") ? 6 : 0) +
+            (hasInterest("action-build") ? 2 : 0)
+          );
+        }
+
+        if (clusterId === "businessLeadership") {
+          return (
+            (hasInterest("work-with-business") ? 8 : 0) +
+            (hasInterest("action-organize") ? 4 : 0) +
+            (hasInterest("action-persuade") ? 5 : 0)
+          );
+        }
+
+        if (clusterId === "lawPublicImpact") {
+          return (
+            (hasInterest("work-with-rules") ? 8 : 0) +
+            (hasInterest("action-express") ? 3 : 0) +
+            (hasInterest("action-persuade") ? 3 : 0)
+          );
+        }
+
+        if (clusterId === "technologyData") {
+          return (
+            (hasInterest("work-with-systems-data") ? 8 : 0) +
+            (hasInterest("action-analyze") ? 4 : 0) +
+            (hasInterest("action-precision") ? 3 : 0)
+          );
+        }
+
+        if (clusterId === "engineeringSystems") {
+          return (
+            (hasInterest("work-with-machines") ? 8 : 0) +
+            (hasInterest("action-build") ? 4 : 0) +
+            (hasInterest("action-precision") ? 3 : 0)
+          );
+        }
+
+        if (clusterId === "healthcareHelping") {
+          return (
+            (hasInterest("work-with-care") ? 8 : 0) +
+            (hasInterest("action-care") ? 5 : 0) +
+            (hasInterest("action-precision") ? 3 : 0)
+          );
+        }
+
+        if (clusterId === "languageEducation") {
+          return (
+            (hasInterest("work-with-care") ? 2 : 0) +
+            (hasInterest("work-with-creative-output") ? 4 : 0) +
+            (hasInterest("action-express") ? 5 : 0) +
+            (hasInterest("action-care") ? 3 : 0)
+          );
+        }
+
+        if (clusterId === "aviationOperations") {
+          return (
+            (hasInterest("work-with-aviation-control") ? 10 : 0) +
+            (hasInterest("action-service") ? 3 : 0) +
+            (hasInterest("action-precision") ? 4 : 0)
+          );
+        }
+
+        return 0;
+      })();
+
       const aspirationBoost = matchedDesiredCareer
         ? cluster.careers.includes(matchedDesiredCareer.title)
           ? 12
@@ -243,7 +324,7 @@ const getClusterScores = ({
       return {
         clusterId,
         ...cluster,
-        score: clampScore(baseScore + categoryBoost + tagBoost + aspirationBoost)
+        score: clampScore(baseScore + categoryBoost + tagBoost + comboBoost + aspirationBoost)
       };
     })
     .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label));
@@ -329,14 +410,30 @@ export default function App() {
     matchedDesiredCareer
   });
   const discoveryPrimaryCluster = discoveryRankedClusters[0] ?? null;
+  const discoverySecondaryCluster = discoveryRankedClusters[1] ?? null;
+  const shouldBlendDiscoveryQuestions =
+    Boolean(discoveryPrimaryCluster) &&
+    Boolean(discoverySecondaryCluster) &&
+    Math.abs((discoveryPrimaryCluster?.score ?? 0) - (discoverySecondaryCluster?.score ?? 0)) <= 5;
+  const discoveryQuestionClusters = shouldBlendDiscoveryQuestions
+    ? [discoveryPrimaryCluster, discoverySecondaryCluster]
+    : discoveryPrimaryCluster
+      ? [discoveryPrimaryCluster]
+      : [];
 
   const activeQuestions = useMemo(() => {
-    if (!prerequisitesReady || !discoveryPrimaryCluster) {
+    if (!prerequisitesReady || discoveryQuestionClusters.length === 0) {
       return [];
     }
 
-    return clusterScenarioQuestions[discoveryPrimaryCluster.clusterId] ?? [];
-  }, [prerequisitesReady, discoveryPrimaryCluster]);
+    if (discoveryQuestionClusters.length === 1) {
+      return clusterScenarioQuestions[discoveryQuestionClusters[0].clusterId] ?? [];
+    }
+
+    return discoveryQuestionClusters.flatMap((cluster) =>
+      (clusterScenarioQuestions[cluster.clusterId] ?? []).slice(0, 2)
+    );
+  }, [prerequisitesReady, discoveryQuestionClusters]);
 
   const activeAnswers = Object.fromEntries(
     Object.entries(answers).filter(([id]) => activeQuestions.some((question) => question.id === id))
@@ -665,11 +762,13 @@ export default function App() {
               ) : shouldAskSituational ? (
                 <>
                   <p className="stage-note">
-                    第四層現在不再用共用題庫，而是先判斷你目前最像哪個職業群，再只問這個職業群最有區分力的 4 題。
+                    第四層現在不再用共用題庫，而是先判斷你目前最像哪個職業群；如果你的訊號同時很接近兩群，就會各挑 2 題來幫你分辨。
                   </p>
                   {discoveryPrimaryCluster && (
                     <p className="stage-cluster-hint">
-                      目前暫時判斷最像：{discoveryPrimaryCluster.label}
+                      {shouldBlendDiscoveryQuestions && discoverySecondaryCluster
+                        ? `目前暫時介於：${discoveryPrimaryCluster.label} / ${discoverySecondaryCluster.label}`
+                        : `目前暫時判斷最像：${discoveryPrimaryCluster.label}`}
                     </p>
                   )}
                   <div className="quiz-grid">

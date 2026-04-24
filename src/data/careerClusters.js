@@ -87,9 +87,9 @@ export const careerClusters = {
   },
   hospitalityService: {
     label: "Hospitality & Service",
-    description: "餐飲、活動、住宿、服務體驗與現場節奏。",
+    description: "餐飲、烘焙、活動、住宿、服務體驗與現場節奏。",
     categories: ["Hospitality"],
-    tags: ["hospitality", "hands_on", "people", "fast_change"],
+    tags: ["hospitality", "hands_on", "people", "fast_change", "creative", "detail", "stable"],
     careers: [
       "廚師 / Chef",
       "烘焙師 / Baker & Pastry Chef",
