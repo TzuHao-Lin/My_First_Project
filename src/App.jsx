@@ -227,7 +227,12 @@ const getClusterComboBoost = (clusterId, hasInterest) => {
       (hasInterest("action-organize") ? 4 : 0) +
       (hasInterest("action-persuade") ? 4 : 0) +
       (hasInterest("action-analyze") ? 3 : 0) +
-      (hasInterest("action-precision") ? 3 : 0)
+      (hasInterest("action-precision") ? 3 : 0) +
+      (hasInterest("work-with-business") &&
+      hasInterest("action-analyze") &&
+      hasInterest("action-precision")
+        ? 8
+        : 0)
     );
   }
 
@@ -237,7 +242,13 @@ const getClusterComboBoost = (clusterId, hasInterest) => {
       (hasInterest("action-express") ? 3 : 0) +
       (hasInterest("action-persuade") ? 2 : 0) +
       (hasInterest("action-care") ? 2 : 0) +
-      (hasInterest("action-service") ? 3 : 0)
+      (hasInterest("action-service") ? 3 : 0) +
+      (hasInterest("work-with-care") &&
+      hasInterest("action-care") &&
+      hasInterest("action-service") &&
+      hasInterest("action-persuade")
+        ? 8
+        : 0)
     );
   }
 
@@ -262,7 +273,10 @@ const getClusterComboBoost = (clusterId, hasInterest) => {
     return (
       (hasInterest("work-with-care") ? 8 : 0) +
       (hasInterest("action-care") ? 5 : 0) +
-      (hasInterest("action-precision") ? 2 : 0)
+      (hasInterest("action-precision") ? 2 : 0) +
+      (hasInterest("work-with-care") && hasInterest("action-care") && !hasInterest("action-service")
+        ? 4
+        : 0)
     );
   }
 
@@ -271,7 +285,8 @@ const getClusterComboBoost = (clusterId, hasInterest) => {
       (hasInterest("work-with-care") ? 2 : 0) +
       (hasInterest("work-with-creative-output") ? 3 : 0) +
       (hasInterest("action-express") ? 5 : 0) +
-      (hasInterest("action-care") ? 3 : 0)
+      (hasInterest("action-care") ? 3 : 0) +
+      (hasInterest("work-with-care") && hasInterest("action-express") ? 4 : 0)
     );
   }
 
@@ -304,6 +319,7 @@ const getClusterConflictPenalty = (clusterId, hasInterest) => {
     if (clusterId === "engineeringSystems") penalty += 14;
     if (clusterId === "technologyData" && !hasInterest("work-with-systems-data")) penalty += 10;
     if (clusterId === "aviationOperations") penalty += 12;
+    if (clusterId === "lawPublicImpact" && !hasInterest("work-with-rules")) penalty += 6;
   }
 
   if (hasInterest("work-with-care")) {
@@ -325,11 +341,28 @@ const getClusterConflictPenalty = (clusterId, hasInterest) => {
     if (clusterId === "businessLeadership" && !hasInterest("work-with-business")) penalty += 10;
     if (clusterId === "hospitalityService" && !hasInterest("work-with-service-experience")) penalty += 6;
     if (clusterId === "languageEducation" && !hasInterest("action-express")) penalty += 8;
+    if (clusterId === "healthcareHelping" && hasInterest("action-persuade")) penalty += 6;
   }
 
   if (hasInterest("action-build") && hasInterest("action-analyze") && hasInterest("action-precision")) {
     if (clusterId === "aviationOperations" && !hasInterest("work-with-aviation-control")) penalty += 18;
     if (clusterId === "engineeringSystems" && !hasInterest("work-with-machines")) penalty += 6;
+    if (clusterId === "businessLeadership" && hasInterest("work-with-business")) penalty -= 4;
+  }
+
+  if (hasInterest("work-with-business") && hasInterest("action-analyze") && hasInterest("action-precision")) {
+    if (clusterId === "technologyData") penalty += 12;
+    if (clusterId === "engineeringSystems") penalty += 12;
+  }
+
+  if (
+    hasInterest("work-with-care") &&
+    hasInterest("action-care") &&
+    hasInterest("action-service") &&
+    hasInterest("action-persuade")
+  ) {
+    if (clusterId === "languageEducation") penalty += 12;
+    if (clusterId === "healthcareHelping") penalty += 8;
   }
 
   return penalty;
