@@ -258,7 +258,7 @@ export default function App() {
 
   const [selectedAgeGroup, setSelectedAgeGroup] = useState("");
   const [selectedWorkWith, setSelectedWorkWith] = useState("");
-  const [selectedAction, setSelectedAction] = useState("");
+  const [selectedAction, setSelectedAction] = useState([]);
   const [careerDirection, setCareerDirection] = useState("unsure");
   const [desiredCareerInput, setDesiredCareerInput] = useState("");
   const [skipSituational, setSkipSituational] = useState(false);
@@ -277,7 +277,10 @@ export default function App() {
 
   const selectedInterestObjects = useMemo(
     () =>
-      [workWithOptions.find((option) => option.id === selectedWorkWith), actionOptions.find((option) => option.id === selectedAction)].filter(Boolean),
+      [
+        workWithOptions.find((option) => option.id === selectedWorkWith),
+        ...actionOptions.filter((option) => selectedAction.includes(option.id))
+      ].filter(Boolean),
     [selectedWorkWith, selectedAction]
   );
 
@@ -298,7 +301,7 @@ export default function App() {
   const prerequisitesReady =
     Boolean(selectedAgeGroup) &&
     Boolean(selectedWorkWith) &&
-    Boolean(selectedAction) &&
+    selectedAction.length > 0 &&
     (careerDirection === "unsure" || desiredCareerInput.trim().length > 0);
 
   const onboardingProfile = useMemo(() => {
@@ -422,7 +425,7 @@ export default function App() {
   const resetDiscoveryFlow = () => {
     setSelectedAgeGroup("");
     setSelectedWorkWith("");
-    setSelectedAction("");
+    setSelectedAction([]);
     setCareerDirection("unsure");
     setDesiredCareerInput("");
     setSkipSituational(false);
@@ -522,17 +525,21 @@ export default function App() {
                 <span>Layer 2B</span>
                 <h3>你比較喜歡做什麼？</h3>
               </div>
-              <p className="stage-note">再選一個你做起來最有感的動作，這會幫系統區分商科、設計、科技、餐飲這些交叉方向。</p>
+              <p className="stage-note">這一層可以複選。選 1 到 3 個你做起來最有感的動作，第四層和推薦都會跟著一起調整。</p>
               <div className="chip-grid">
                 {actionOptions.map((action) => {
-                  const selected = selectedAction === action.id;
+                  const selected = selectedAction.includes(action.id);
 
                   return (
                     <button
                       className={selected ? "selected" : ""}
                       key={action.id}
                       onClick={() => {
-                        setSelectedAction(action.id);
+                        setSelectedAction((current) =>
+                          current.includes(action.id)
+                            ? current.filter((id) => id !== action.id)
+                            : [...current, action.id]
+                        );
                         setSkipSituational(false);
                         setAnswers({});
                       }}

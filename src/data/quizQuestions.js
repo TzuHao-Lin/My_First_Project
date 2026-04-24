@@ -51,12 +51,20 @@ export const workWithOptions = [
     scores: { creativity: 18, people: 4 }
   },
   {
-    id: "work-with-real-things",
-    label: "真實物件 / 空間 / 食物 / 機器",
-    description: "料理、設備、建築、實體操作、現場物件",
-    categories: ["Engineering", "Hospitality", "Aviation", "Design"],
-    tags: ["hands_on", "hospitality", "engineering"],
-    scores: { logic: 8, creativity: 8, pressure: 4 }
+    id: "work-with-food-space",
+    label: "食物 / 空間 / 真實體驗",
+    description: "料理、烘焙、空間、服務現場、被真實使用的東西",
+    categories: ["Hospitality", "Design"],
+    tags: ["hands_on", "hospitality", "design"],
+    scores: { creativity: 10, people: 4, pressure: 4 }
+  },
+  {
+    id: "work-with-machines",
+    label: "機器 / 設備 / 結構",
+    description: "機器、裝置、建築、工程物件、系統設備",
+    categories: ["Engineering", "Aviation", "Technology"],
+    tags: ["hands_on", "engineering", "technical"],
+    scores: { logic: 12, pressure: 2, longLearning: 4 }
   }
 ];
 
