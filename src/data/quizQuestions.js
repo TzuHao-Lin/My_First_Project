@@ -186,7 +186,7 @@ export const clusterScenarioQuestions = {
       prompt: "哪一種比較像你？",
       options: [
         { text: "如果這能真正幫助人，我願意慢慢累積", value: "healthcare_long_study", scores: { longLearning: 18, people: 8, logic: 6 } },
-        { text: "我比較想先做看得到成果的事情", value: "healthcare_fast_feedback", scores: { longLearning: -14, creativity: 6, stability: -4 } }
+        { text: "我比較想先做看得到成果、和人直接互動比較多的角色，再慢慢累積專業", value: "healthcare_fast_feedback", scores: { longLearning: -8, creativity: 6, stability: -2, people: 6 } }
       ]
     },
     {
@@ -228,7 +228,7 @@ export const clusterScenarioQuestions = {
       prompt: "這種畫面你覺得？",
       options: [
         { text: "我可以接受，甚至會覺得很有投入感", value: "tech_focus", scores: { logic: 16, people: -10, stability: 6 } },
-        { text: "我會希望工作中有更多現場感或人際互動", value: "tech_less_desk", scores: { people: 10, creativity: 4, stability: -4 } }
+        { text: "我會希望工作中有更多和團隊 / 使用者互動，比較像產品、資料溝通或跨部門技術角色", value: "tech_less_desk", scores: { people: 10, creativity: 4, stability: -2, logic: 4 } }
       ]
     },
     {
@@ -248,7 +248,7 @@ export const clusterScenarioQuestions = {
       prompt: "你對這件事的感覺比較像？",
       options: [
         { text: "我可以接受一直學新東西，反而覺得有趣", value: "tech_keep_learning", scores: { longLearning: 16, logic: 8 } },
-        { text: "我比較希望學一次就能用很久，不想一直追新變化", value: "tech_stable_stack", scores: { stability: 12, pressure: -4 } }
+        { text: "我比較希望把一套系統學得很熟、長期維護和優化，不想一直追新變化", value: "tech_stable_stack", scores: { stability: 12, pressure: -4, logic: 4 } }
       ]
     }
   ],
@@ -270,7 +270,7 @@ export const clusterScenarioQuestions = {
       prompt: "你對這種取捨的感覺？",
       options: [
         { text: "我可以接受，這就是解決真實問題的一部分", value: "engineering_tradeoff", scores: { logic: 16, stability: 8 } },
-        { text: "我比較想保有更自由的創作空間", value: "engineering_free_form", scores: { creativity: 10, stability: -6 } }
+        { text: "我比較想在規則裡保有更多設計感和概念發想空間，比較像建築或產品概念端", value: "engineering_free_form", scores: { creativity: 10, stability: -4, logic: 4 } }
       ]
     },
     {
@@ -290,7 +290,7 @@ export const clusterScenarioQuestions = {
       prompt: "你的反應比較像？",
       options: [
         { text: "如果是我真的有興趣的方向，我願意慢慢學深", value: "engineering_deep_study", scores: { longLearning: 16, logic: 10 } },
-        { text: "我比較想快點上手，先做再說", value: "engineering_learn_fast", scores: { creativity: 8, longLearning: -8, pressure: 4 } }
+        { text: "我比較想先從實作和現場經驗上手，再慢慢補理論，比較像應用技術或設備端", value: "engineering_learn_fast", scores: { creativity: 8, longLearning: -6, pressure: 4 } }
       ]
     }
   ],
@@ -302,7 +302,7 @@ export const clusterScenarioQuestions = {
       prompt: "你比較哪一種？",
       options: [
         { text: "我可以接受反覆修改，讓作品更成熟", value: "design_iterate", scores: { creativity: 16, stability: 4 } },
-        { text: "我會希望趕快定稿，不想一直改", value: "design_lock_fast", scores: { pressure: -4, stability: 6, creativity: -4 } }
+        { text: "我會希望先把方向定清楚，再做少量但到位的修正，比較像風格明確或內容導向的創作", value: "design_lock_fast", scores: { pressure: -2, stability: 6, creativity: 2 } }
       ]
     },
     {
@@ -470,7 +470,7 @@ export const clusterScenarioQuestions = {
       prompt: "你對這種任務的感覺？",
       options: [
         { text: "我很喜歡，覺得把事情講清楚很有成就感", value: "language_explain", scores: { people: 14, creativity: 8, logic: 4 } },
-        { text: "我比較喜歡在背後整理內容，不一定想一直對人說", value: "language_prepare", scores: { logic: 12, people: -6, stability: 4 } }
+        { text: "我比較喜歡在背後整理文字、內容和語意，不一定要一直站在前面說", value: "language_prepare", scores: { logic: 12, people: -2, stability: 4, creativity: 4 } }
       ]
     },
     {
@@ -512,7 +512,7 @@ export const clusterScenarioQuestions = {
       prompt: "你對這種工作感覺如何？",
       options: [
         { text: "我能接受，程序和安全感本來就很重要", value: "aviation_procedure", scores: { logic: 14, stability: 10, pressure: 4 } },
-        { text: "我比較想保有彈性，不喜歡一直被流程綁住", value: "aviation_flex", scores: { creativity: 8, stability: -8 } }
+        { text: "我還是能接受規則，但希望在流程內保有更多現場應變和服務彈性，比較像空服或協調型角色", value: "aviation_flex", scores: { creativity: 8, stability: -4, people: 6 } }
       ]
     },
     {
@@ -522,7 +522,7 @@ export const clusterScenarioQuestions = {
       prompt: "哪一種比較像你？",
       options: [
         { text: "我可以在壓力下維持專注，照步驟做出判斷", value: "aviation_control", scores: { pressure: 16, logic: 12, stability: 4 } },
-        { text: "我比較不喜歡一直在高壓下做即時決定", value: "aviation_low_pressure", scores: { pressure: -12, stability: 6 } }
+        { text: "我比較不想一直做高壓控制決策，但可以接受偏服務、支援和流程協調的航空角色", value: "aviation_low_pressure", scores: { pressure: -8, stability: 6, people: 6 } }
       ]
     },
     {
@@ -542,7 +542,7 @@ export const clusterScenarioQuestions = {
       prompt: "你的感覺比較像？",
       options: [
         { text: "如果工作本身有吸引力，我可以接受這種節奏", value: "aviation_variable", scores: { pressure: 8, stability: -6, longLearning: 4 } },
-        { text: "我會比較希望工作規律、可預測、少一點波動", value: "aviation_regular", scores: { stability: 12, pressure: -4 } }
+        { text: "我還是偏好比較規律、可預測的節奏，所以會更在意自己在航空裡選哪種角色和班表型態", value: "aviation_regular", scores: { stability: 12, pressure: -4, logic: 2 } }
       ]
     }
   ]

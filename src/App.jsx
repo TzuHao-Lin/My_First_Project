@@ -195,6 +195,146 @@ const getRecommendationScore = ({
   };
 };
 
+const getClusterSignals = (selectedInterestObjects) => {
+  const selectedInterestIds = new Set(selectedInterestObjects.map((interest) => interest.id));
+  const hasInterest = (interestId) => selectedInterestIds.has(interestId);
+
+  return { selectedInterestIds, hasInterest };
+};
+
+const getClusterComboBoost = (clusterId, hasInterest) => {
+  if (clusterId === "hospitalityService") {
+    return (
+      (hasInterest("work-with-service-experience") ? 7 : 0) +
+      (hasInterest("action-build") ? 3 : 0) +
+      (hasInterest("action-create") ? 4 : 0) +
+      (hasInterest("action-precision") ? 3 : 0) +
+      (hasInterest("action-service") ? 3 : 0)
+    );
+  }
+
+  if (clusterId === "designCreativeMedia") {
+    return (
+      (hasInterest("work-with-creative-output") ? 7 : 0) +
+      (hasInterest("action-create") ? 5 : 0) +
+      (hasInterest("action-build") ? 1 : 0)
+    );
+  }
+
+  if (clusterId === "businessLeadership") {
+    return (
+      (hasInterest("work-with-business") ? 7 : 0) +
+      (hasInterest("action-organize") ? 4 : 0) +
+      (hasInterest("action-persuade") ? 4 : 0) +
+      (hasInterest("action-analyze") ? 3 : 0) +
+      (hasInterest("action-precision") ? 3 : 0)
+    );
+  }
+
+  if (clusterId === "lawPublicImpact") {
+    return (
+      (hasInterest("work-with-rules") ? 8 : 0) +
+      (hasInterest("action-express") ? 3 : 0) +
+      (hasInterest("action-persuade") ? 2 : 0) +
+      (hasInterest("action-care") ? 2 : 0) +
+      (hasInterest("action-service") ? 3 : 0)
+    );
+  }
+
+  if (clusterId === "technologyData") {
+    return (
+      (hasInterest("work-with-systems-data") ? 8 : 0) +
+      (hasInterest("action-analyze") ? 4 : 0) +
+      (hasInterest("action-precision") ? 3 : 0) +
+      (hasInterest("action-build") ? 2 : 0)
+    );
+  }
+
+  if (clusterId === "engineeringSystems") {
+    return (
+      (hasInterest("work-with-machines") ? 7 : 0) +
+      (hasInterest("action-build") ? 4 : 0) +
+      (hasInterest("action-precision") ? 2 : 0)
+    );
+  }
+
+  if (clusterId === "healthcareHelping") {
+    return (
+      (hasInterest("work-with-care") ? 8 : 0) +
+      (hasInterest("action-care") ? 5 : 0) +
+      (hasInterest("action-precision") ? 2 : 0)
+    );
+  }
+
+  if (clusterId === "languageEducation") {
+    return (
+      (hasInterest("work-with-care") ? 2 : 0) +
+      (hasInterest("work-with-creative-output") ? 3 : 0) +
+      (hasInterest("action-express") ? 5 : 0) +
+      (hasInterest("action-care") ? 3 : 0)
+    );
+  }
+
+  if (clusterId === "aviationOperations") {
+    return (
+      (hasInterest("work-with-aviation-control") ? 10 : 0) +
+      (hasInterest("action-service") ? 2 : 0) +
+      (hasInterest("action-precision") ? 3 : 0)
+    );
+  }
+
+  return 0;
+};
+
+const getClusterConflictPenalty = (clusterId, hasInterest) => {
+  let penalty = 0;
+
+  if (hasInterest("work-with-rules")) {
+    if (clusterId === "aviationOperations") penalty += 18;
+    if (clusterId === "engineeringSystems") penalty += 12;
+    if (clusterId === "technologyData") penalty += 6;
+  }
+
+  if (hasInterest("work-with-systems-data")) {
+    if (clusterId === "aviationOperations" && !hasInterest("work-with-aviation-control")) penalty += 20;
+    if (clusterId === "lawPublicImpact" && !hasInterest("work-with-rules")) penalty += 6;
+  }
+
+  if (hasInterest("work-with-business")) {
+    if (clusterId === "engineeringSystems") penalty += 14;
+    if (clusterId === "technologyData" && !hasInterest("work-with-systems-data")) penalty += 10;
+    if (clusterId === "aviationOperations") penalty += 12;
+  }
+
+  if (hasInterest("work-with-care")) {
+    if (clusterId === "businessLeadership" && !hasInterest("action-organize")) penalty += 8;
+    if (clusterId === "aviationOperations") penalty += 10;
+  }
+
+  if (hasInterest("work-with-service-experience")) {
+    if (clusterId === "designCreativeMedia" && !hasInterest("work-with-creative-output")) penalty += 12;
+    if (clusterId === "engineeringSystems" && !hasInterest("work-with-machines")) penalty += 8;
+  }
+
+  if (hasInterest("action-create") && hasInterest("action-build") && hasInterest("action-precision")) {
+    if (clusterId === "designCreativeMedia" && !hasInterest("work-with-creative-output")) penalty += 10;
+    if (clusterId === "hospitalityService" && !hasInterest("work-with-service-experience")) penalty += 8;
+  }
+
+  if (hasInterest("action-care") && hasInterest("action-service")) {
+    if (clusterId === "businessLeadership" && !hasInterest("work-with-business")) penalty += 10;
+    if (clusterId === "hospitalityService" && !hasInterest("work-with-service-experience")) penalty += 6;
+    if (clusterId === "languageEducation" && !hasInterest("action-express")) penalty += 8;
+  }
+
+  if (hasInterest("action-build") && hasInterest("action-analyze") && hasInterest("action-precision")) {
+    if (clusterId === "aviationOperations" && !hasInterest("work-with-aviation-control")) penalty += 18;
+    if (clusterId === "engineeringSystems" && !hasInterest("work-with-machines")) penalty += 6;
+  }
+
+  return penalty;
+};
+
 const getClusterScores = ({
   careersWithTags,
   userProfile,
@@ -203,8 +343,7 @@ const getClusterScores = ({
 }) =>
   Object.entries(careerClusters)
     .map(([clusterId, cluster]) => {
-      const selectedInterestIds = new Set(selectedInterestObjects.map((interest) => interest.id));
-      const hasInterest = (interestId) => selectedInterestIds.has(interestId);
+      const { hasInterest } = getClusterSignals(selectedInterestObjects);
       const clusterCareers = careersWithTags.filter((career) => cluster.careers.includes(career.title));
 
       const topCareerMatches = clusterCareers
@@ -224,107 +363,33 @@ const getClusterScores = ({
           cluster.categories.includes(category)
         ).length;
 
-        return sum + overlap * 4;
+        return sum + overlap * 2;
       }, 0);
 
       const tagBoost = selectedInterestObjects.reduce((sum, interest) => {
         const overlap = interest.tags.filter((tag) => cluster.tags.includes(tag)).length;
 
-        return sum + overlap * 3;
+        return sum + overlap * 1.5;
       }, 0);
 
-      const comboBoost = (() => {
-        if (clusterId === "hospitalityService") {
-          return (
-            (hasInterest("work-with-service-experience") ? 8 : 0) +
-            (hasInterest("action-build") ? 4 : 0) +
-            (hasInterest("action-create") ? 5 : 0) +
-            (hasInterest("action-precision") ? 4 : 0) +
-            (hasInterest("action-service") ? 4 : 0)
-          );
-        }
-
-        if (clusterId === "designCreativeMedia") {
-          return (
-            (hasInterest("work-with-creative-output") ? 8 : 0) +
-            (hasInterest("action-create") ? 6 : 0) +
-            (hasInterest("action-build") ? 2 : 0)
-          );
-        }
-
-        if (clusterId === "businessLeadership") {
-          return (
-            (hasInterest("work-with-business") ? 8 : 0) +
-            (hasInterest("action-organize") ? 4 : 0) +
-            (hasInterest("action-persuade") ? 5 : 0)
-          );
-        }
-
-        if (clusterId === "lawPublicImpact") {
-          return (
-            (hasInterest("work-with-rules") ? 8 : 0) +
-            (hasInterest("action-express") ? 3 : 0) +
-            (hasInterest("action-persuade") ? 3 : 0)
-          );
-        }
-
-        if (clusterId === "technologyData") {
-          return (
-            (hasInterest("work-with-systems-data") ? 8 : 0) +
-            (hasInterest("action-analyze") ? 4 : 0) +
-            (hasInterest("action-precision") ? 3 : 0)
-          );
-        }
-
-        if (clusterId === "engineeringSystems") {
-          return (
-            (hasInterest("work-with-machines") ? 8 : 0) +
-            (hasInterest("action-build") ? 4 : 0) +
-            (hasInterest("action-precision") ? 3 : 0)
-          );
-        }
-
-        if (clusterId === "healthcareHelping") {
-          return (
-            (hasInterest("work-with-care") ? 8 : 0) +
-            (hasInterest("action-care") ? 5 : 0) +
-            (hasInterest("action-precision") ? 3 : 0)
-          );
-        }
-
-        if (clusterId === "languageEducation") {
-          return (
-            (hasInterest("work-with-care") ? 2 : 0) +
-            (hasInterest("work-with-creative-output") ? 4 : 0) +
-            (hasInterest("action-express") ? 5 : 0) +
-            (hasInterest("action-care") ? 3 : 0)
-          );
-        }
-
-        if (clusterId === "aviationOperations") {
-          return (
-            (hasInterest("work-with-aviation-control") ? 10 : 0) +
-            (hasInterest("action-service") ? 3 : 0) +
-            (hasInterest("action-precision") ? 4 : 0)
-          );
-        }
-
-        return 0;
-      })();
+      const comboBoost = getClusterComboBoost(clusterId, hasInterest);
+      const conflictPenalty = getClusterConflictPenalty(clusterId, hasInterest);
 
       const aspirationBoost = matchedDesiredCareer
         ? cluster.careers.includes(matchedDesiredCareer.title)
-          ? 12
+          ? 10
           : matchedDesiredCareer.category &&
               cluster.categories.includes(matchedDesiredCareer.category)
-            ? 6
+            ? 4
             : 0
         : 0;
 
       return {
         clusterId,
         ...cluster,
-        score: clampScore(baseScore + categoryBoost + tagBoost + comboBoost + aspirationBoost)
+        score: clampScore(
+          Math.round(baseScore * 0.72 + categoryBoost + tagBoost + comboBoost + aspirationBoost - conflictPenalty)
+        )
       };
     })
     .sort((a, b) => b.score - a.score || a.label.localeCompare(b.label));
@@ -456,11 +521,21 @@ export default function App() {
     matchedDesiredCareer
   });
   const primaryCluster = rankedClusters[0] ?? null;
-  const primaryClusterCareerSet = new Set(
-    primaryCluster?.careers ?? careersWithTags.map((career) => career.title)
+  const recommendationClusters = rankedClusters.filter(
+    (cluster, index) =>
+      index < 3 && cluster.score >= Math.max((rankedClusters[0]?.score ?? 0) - 6, 72)
   );
+  const recommendationCareerSet = new Set(
+    recommendationClusters.flatMap((cluster) => cluster.careers)
+  );
+  const fallbackCareerSet = new Set(careersWithTags.map((career) => career.title));
 
   const scoredCareers = careersWithTags
+    .filter((career) =>
+      recommendationCareerSet.size > 0
+        ? recommendationCareerSet.has(career.title)
+        : fallbackCareerSet.has(career.title)
+    )
     .map((career) => {
       const recommendation = getRecommendationScore({
         career,
@@ -469,7 +544,13 @@ export default function App() {
         matchedDesiredCareer
       });
 
-      const clusterBonus = primaryClusterCareerSet.has(career.title) ? 6 : 0;
+      const clusterBonus = recommendationClusters.reduce((sum, cluster, index) => {
+        if (!cluster.careers.includes(career.title)) {
+          return sum;
+        }
+
+        return sum + (index === 0 ? 6 : 3);
+      }, 0);
 
       return { ...career, ...recommendation, score: clampScore(recommendation.score + clusterBonus) };
     })
@@ -488,6 +569,10 @@ export default function App() {
 
     return [...selected, career];
   }, []);
+  const finalRecommendedCareers = [
+    ...recommendedCareers,
+    ...scoredCareers.filter((career) => !recommendedCareers.some((item) => item.title === career.title))
+  ].slice(0, 3);
 
   const filteredCareers = careersWithTags.filter((career) => {
     const matchesCategory =
@@ -835,7 +920,7 @@ export default function App() {
                 </p>
               </div>
               <div className="recommendation-grid">
-                {recommendedCareers.map((career, index) => (
+                {finalRecommendedCareers.map((career, index) => (
                   <article className="recommendation-card" key={career.title}>
                     <div className="recommendation-topline">
                       <p className="rank">#{index + 1}</p>
