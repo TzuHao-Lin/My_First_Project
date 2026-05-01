@@ -138,6 +138,56 @@ const getClosestDimensions = (userProfile, careerProfile) =>
     .slice(0, 3)
     .map(({ dimension }) => dimension);
 
+const getDirectionFitSummary = (clusterId) => {
+  const summaries = {
+    healthcareHelping:
+      "你可能會對照顧、支持、陪伴和專業幫助人的工作有感，而且願意面對責任和長期累積。",
+    technologyData:
+      "你比較像會被系統、資料、邏輯和解決問題吸引的人，做出能運作的東西會讓你有成就感。",
+    engineeringSystems:
+      "你可能喜歡把抽象想法變成真實系統、結構或裝置，也能接受規格、限制和實作測試。",
+    designCreativeMedia:
+      "你比較可能在創意表達、體驗設計、畫面感和作品完成度裡找到興趣，會在意感受和呈現方式。",
+    businessLeadership:
+      "你可能對推動事情前進、整合資源、商業判斷和影響他人比較有感，而不只是單點執行。",
+    lawPublicImpact:
+      "你可能會被規則、公平、制度、公共議題和保護他人的角色吸引，願意面對責任與立場判斷。",
+    hospitalityService:
+      "你比較可能喜歡真實體驗、服務節奏、作品完成感和現場感，會從讓人實際感受到結果中得到回饋。",
+    languageEducation:
+      "你可能對解釋、教學、語言轉換和幫助別人理解事情有感，重視溝通與理解的過程。",
+    aviationOperations:
+      "你可能會被高標準程序、專注控制、即時判斷和運輸節奏吸引，對安全感與流程感比較敏銳。"
+  };
+
+  return summaries[clusterId] ?? "這條方向和你的回答有明顯重疊，值得你先花一點時間做真實探索。";
+};
+
+const getDirectionCaution = (clusterId) => {
+  const cautions = {
+    healthcareHelping:
+      "不要只因為『想幫助人』就衝進去，先確認自己能不能接受長期訓練、情緒壓力和專業責任。",
+    technologyData:
+      "不要只因為覺得科技很熱門就往前走，先確認你能不能接受長時間專注、除錯和持續學新東西。",
+    engineeringSystems:
+      "不要只看表面的酷或成就感，先確認自己能不能接受理論基礎、規格限制和反覆測試。",
+    designCreativeMedia:
+      "不要只因為喜歡好看作品就下結論，先確認自己能不能接受反覆修改、回饋和產出壓力。",
+    businessLeadership:
+      "不要只因為聽起來發展很多就衝，先確認你能不能接受模糊問題、協調壓力和結果責任。",
+    lawPublicImpact:
+      "不要只因為覺得有正義感就決定，先確認你能不能接受閱讀、規則、衝突和高責任判斷。",
+    hospitalityService:
+      "不要只看成品或浪漫感，先確認你能不能接受現場節奏、重複練習、輪班或服務壓力。",
+    languageEducation:
+      "不要只因為語言不錯或喜歡教人就決定，先確認你能不能長期做說明、修正和陪伴理解。",
+    aviationOperations:
+      "不要只因為飛行很酷就決定，先確認你能不能接受程序紀律、高標準安全要求和不固定節奏。"
+  };
+
+  return cautions[clusterId] ?? "先用小型探索確認自己是真的有感，不要太快把自己綁死在單一路線。";
+};
+
 const findMatchedCareer = (input, careersWithTags) => {
   const normalized = normalizeText(input);
 
@@ -645,6 +695,8 @@ export default function App() {
     return {
       ...cluster,
       representativeCareers,
+      fitSummary: getDirectionFitSummary(cluster.clusterId),
+      caution: getDirectionCaution(cluster.clusterId),
       nextTry:
         categoryPlan?.try ??
         representativeCareers[0]?.explore ??
@@ -1026,9 +1078,7 @@ export default function App() {
 
                     <div>
                       <p className="recommendation-label">Why this direction fits you</p>
-                      <p>
-                        你的回答目前最接近這個方向，代表你可能會對這一類的工作內容、節奏和能力要求有感。
-                      </p>
+                      <p>{direction.fitSummary}</p>
                     </div>
 
                     <div>
@@ -1056,7 +1106,7 @@ export default function App() {
                     </div>
 
                     <button
-                      className={selectedDirectionId === direction.clusterId ? "secondary active" : "secondary"}
+                      className={selectedDirectionId === direction.clusterId ? "direction-button active" : "direction-button"}
                       onClick={() => setSelectedDirectionId(direction.clusterId)}
                       type="button"
                     >
@@ -1088,7 +1138,7 @@ export default function App() {
                     {selectedAgePlan && (
                       <div className="recommendation-caution">
                         <p className="recommendation-label">What not to rush</p>
-                        <p>{selectedAgePlan.avoid}</p>
+                        <p>{direction.caution}</p>
                       </div>
                     )}
                   </article>

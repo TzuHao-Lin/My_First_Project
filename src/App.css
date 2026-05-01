@@ -378,6 +378,24 @@ h1 {
   color: #172033;
 }
 
+.direction-button {
+  border: 1px solid #9bc7ef;
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: #eef6ff;
+  color: #0e3554;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  text-align: center;
+}
+
+.direction-button.active {
+  border-color: #0a6a9f;
+  background: #d8ecff;
+  color: #0a6a9f;
+}
+
 .recommendation-topline {
   display: flex;
   align-items: center;
