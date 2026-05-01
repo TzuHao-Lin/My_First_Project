@@ -138,3 +138,95 @@
 目標是：
 
 從「知道方向」到「真的走出一條路」。
+
+## Scoring Model + Career Matching Algorithm
+
+目前推薦邏輯已經開始整理成比較清楚的分數模型，而不是只有單純比對。
+
+### 1. User profile layer
+
+系統先把使用者的回答轉成一個 profile，主要來源有：
+
+- 年齡 / 階段
+- Layer 2A：喜歡面對什麼
+- Layer 2B：喜歡做什麼
+- Layer 3：如果有嚮往職業，會做少量方向加權
+- Layer 4：情境題答案
+
+目前 profile 會映射到幾個核心維度：
+
+- people
+- logic
+- creativity
+- pressure
+- stability
+- longLearning
+
+### 2. Cluster scoring layer
+
+系統不會一開始就在全部職業裡硬排，而是先算職業群分數。
+
+目前 cluster score 由這些部分組成：
+
+- base match：使用者 profile 和該群高分職業的平均接近度
+- category overlap：Layer 2 選項和 cluster categories 的重疊
+- tag overlap：Layer 2 選項和 cluster tags 的重疊
+- combo boost：特定組合加成
+- conflict penalty：高衝突方向扣分
+- aspiration boost：如果使用者已經有嚮往方向，會做少量加權
+
+### 3. Career scoring layer
+
+在主要 cluster 確立後，再針對職業本身算分。
+
+career score 目前結構：
+
+- match score：user profile vs career fit profile
+- interest category boost
+- interest tag boost
+- desired-career similarity boost
+- cluster bonus
+
+### 4. Why this matters
+
+這個設計的目標不是直接給唯一答案，而是：
+
+- 先找出值得探索的方向
+- 再從方向裡挑代表職業
+- 讓推薦更像 exploration，而不是 final judgment
+
+## Anonymous User Data Collection
+
+目前已經開始支援匿名資料收集，先存在瀏覽器 localStorage，之後可以匯出分析。
+
+### 目前會收集什麼
+
+- discovery_ready
+- discovery_completed
+- direction_opened
+- discovery_reset
+
+### 目前收集的欄位
+
+- 匿名 user id
+- timestamp
+- age group
+- Layer 2A / 2B selections
+- 是否有嚮往職業
+- 是否跳過 Layer 4
+- top directions
+- 使用者深入點進哪條方向
+
+### 目前不收集什麼
+
+- 姓名
+- email
+- 聯絡方式
+- 自由輸入的未匹配個資
+
+### 下一步可以怎麼做
+
+- 匯出 JSON 後分析哪種答案組合最常走向哪些方向
+- 比較使用者最後深入看的方向和系統第一名方向是否一致
+- 找出常常被誤判的職業群
+- 用真實資料校正 cluster boost / conflict penalty / category mapping

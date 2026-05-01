@@ -500,6 +500,51 @@ h1 {
   background: #fff3ed;
 }
 
+.analytics-panel {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+  border-radius: 18px;
+  padding: 18px;
+  background: rgba(155, 208, 255, 0.12);
+}
+
+.analytics-note {
+  max-width: none;
+  text-align: left;
+}
+
+.analytics-meta {
+  display: grid;
+  gap: 6px;
+}
+
+.analytics-meta p {
+  color: #d6dfeb;
+}
+
+.analytics-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.analytics-actions button {
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 14px;
+  padding: 12px 14px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #f8fbff;
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+}
+
+.analytics-actions .secondary-action {
+  background: rgba(255, 255, 255, 0.04);
+  color: #c8d3e1;
+}
+
 .action-item {
   border-left: 3px solid #9bd0ff;
   padding-left: 10px;

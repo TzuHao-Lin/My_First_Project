@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { actionPlans, ageActionPlans } from "./data/actionPlans";
 import { careers } from "./data/careers";
 import { careerClusters } from "./data/careerClusters";
@@ -9,6 +9,13 @@ import { categoryLabels } from "./data/categoryLabels";
 import { dimensionLabels, dimensions } from "./data/dimensions";
 import { filterLabels } from "./data/filterLabels";
 import { filterOptions } from "./data/filterOptions";
+import { matchingModel } from "./data/matchingModel";
+import {
+  clearAnonymousAnalytics,
+  exportAnonymousAnalytics,
+  getAnonymousAnalyticsSummary,
+  trackAnonymousEvent
+} from "./lib/anonymousAnalytics";
 import {
   actionOptions,
   ageGroups,
@@ -188,6 +195,54 @@ const getDirectionCaution = (clusterId) => {
   return cautions[clusterId] ?? "先用小型探索確認自己是真的有感，不要太快把自己綁死在單一路線。";
 };
 
+const getDirectionStageFocus = (clusterId) => {
+  const focuses = {
+    healthcareHelping: "先確認你是真的想長期幫助人，而且能接受專業責任與照顧壓力。",
+    technologyData: "先確認你喜歡的是解題、系統和資料本身，不只是因為科技看起來有前景。",
+    engineeringSystems: "先確認你喜歡把東西做成真的過程，而不只是喜歡成果看起來很厲害。",
+    designCreativeMedia: "先確認你對創作、體驗和反覆修改真的有感，而不只是喜歡好看的作品。",
+    businessLeadership: "先確認你對推動事情、資源判斷和影響他人有感，而不只是覺得商業選擇很多。",
+    lawPublicImpact: "先確認你在意的是規則、公平和公共影響，而不只是單純覺得這些工作有地位。",
+    hospitalityService: "先確認你喜歡真實體驗、現場節奏和作品完成感，而不只是喜歡成品本身。",
+    languageEducation: "先確認你喜歡的是幫助別人理解、表達和教學，而不只是單純語言成績不錯。",
+    aviationOperations: "先確認你對程序、安全、專注和運輸節奏有感，而不只是覺得航空很酷。"
+  };
+
+  return focuses[clusterId] ?? "先確認自己喜歡的是這條方向的日常內容，而不只是表面的職業想像。";
+};
+
+const getDirectionStageThisWeek = (clusterId) => {
+  const actions = {
+    healthcareHelping: "這週先看一個真實從業者的一天，並記下你能不能接受那種責任與互動密度。",
+    technologyData: "這週先做一個很小的系統或資料練習，確認你是否真的享受 debug、分析或建構流程。",
+    engineeringSystems: "這週先做一個小型模型、CAD 草圖或拆解一個真實工程案例，看看自己對實作和規格有沒有興趣。",
+    designCreativeMedia: "這週先重做一個畫面、作品或內容，確認你是否願意為了更好而反覆修改。",
+    businessLeadership: "這週先分析一個產品、活動或品牌為什麼有效，確認你是否真的喜歡判斷和推進方向。",
+    lawPublicImpact: "這週先找一個社會議題，試著整理證據、規則和不同立場，看看你是否喜歡這種思考方式。",
+    hospitalityService: "這週先做一次真實作品或服務觀察，例如做一道料理、烘焙一次，或記錄一家店怎麼顧體驗。",
+    languageEducation: "這週先教別人一個概念、翻譯一小段內容，或把複雜事情講清楚，看看你有沒有成就感。",
+    aviationOperations: "這週先用模擬器、程序影片或航管案例，感受自己對程序、專注和即時判斷有沒有興趣。"
+  };
+
+  return actions[clusterId] ?? "這週先做一個很小的探索動作，確認自己對這條方向的日常內容有沒有感覺。";
+};
+
+const getDirectionStageThisMonth = (clusterId) => {
+  const actions = {
+    healthcareHelping: "這個月安排一次更真實的接觸，例如志工、訪談或觀察現場，確認自己對助人工作能不能長期投入。",
+    technologyData: "這個月做一個可以展示的小作品，例如小網站、資料分析或安全練習，看看自己是否願意持續做下去。",
+    engineeringSystems: "這個月完成一個小型實作或設計紀錄，讓自己感受從概念到實體的過程是不是你想走的路。",
+    designCreativeMedia: "這個月完成一個可展示作品，並找人給你回饋，看看你是否真的能接受創作上的反覆修正。",
+    businessLeadership: "這個月選一個品牌、產品或活動做完整拆解，或試著規劃一個小型企劃，確認自己是否喜歡這種推進感。",
+    lawPublicImpact: "這個月針對一個公共議題做更完整的分析或辯論練習，確認自己是否真的喜歡規則、制度和立場判斷。",
+    hospitalityService: "這個月做一次完整的真實嘗試，例如規劃小活動、完成一套料理 / 烘焙作品，或觀察一個服務現場怎麼運作。",
+    languageEducation: "這個月試著持續做一種輸出，例如教學、翻譯、寫作或解釋內容，確認自己是否喜歡長期陪伴理解的過程。",
+    aviationOperations: "這個月系統性接觸航空世界，例如模擬器、程序學習、案例觀看或從業者訪談，確認自己對這條路是不是只有想像。"
+  };
+
+  return actions[clusterId] ?? "這個月做一次更完整的探索，確認自己對這條方向的興趣不是只有短暫好奇。";
+};
+
 const findMatchedCareer = (input, careersWithTags) => {
   const normalized = normalizeText(input);
 
@@ -228,14 +283,20 @@ const getRecommendationScore = ({
     }
 
     if (career.title === matchedDesiredCareer.title) {
-      return 20;
+      return matchingModel.aspiration.exactCareerBoost;
     }
 
     const sharedTags = career.tags.filter((tag) => matchedDesiredCareer.tags.includes(tag)).length;
-    const sameCategory = career.category === matchedDesiredCareer.category ? 6 : 0;
-    const sameWorkStyle = career.workStyle === matchedDesiredCareer.workStyle ? 2 : 0;
+    const sameCategory =
+      career.category === matchedDesiredCareer.category
+        ? matchingModel.aspiration.sameCategoryBoost
+        : 0;
+    const sameWorkStyle =
+      career.workStyle === matchedDesiredCareer.workStyle
+        ? matchingModel.aspiration.sameWorkStyleBoost
+        : 0;
 
-    return Math.min(14, sharedTags * 2 + sameCategory + sameWorkStyle);
+    return Math.min(matchingModel.aspiration.similarityCap, sharedTags * 2 + sameCategory + sameWorkStyle);
   })();
 
   return {
@@ -446,13 +507,13 @@ const getClusterScores = ({
           cluster.categories.includes(category)
         ).length;
 
-        return sum + overlap * 2;
+        return sum + overlap * matchingModel.clusterScore.categoryOverlapWeight;
       }, 0);
 
       const tagBoost = selectedInterestObjects.reduce((sum, interest) => {
         const overlap = interest.tags.filter((tag) => cluster.tags.includes(tag)).length;
 
-        return sum + overlap * 1.5;
+        return sum + overlap * matchingModel.clusterScore.tagOverlapWeight;
       }, 0);
 
       const comboBoost = getClusterComboBoost(clusterId, hasInterest);
@@ -460,10 +521,10 @@ const getClusterScores = ({
 
       const aspirationBoost = matchedDesiredCareer
         ? cluster.careers.includes(matchedDesiredCareer.title)
-          ? 10
+          ? matchingModel.aspiration.clusterExactBoost
           : matchedDesiredCareer.category &&
               cluster.categories.includes(matchedDesiredCareer.category)
-            ? 4
+            ? matchingModel.aspiration.clusterCategoryBoost
             : 0
         : 0;
 
@@ -471,7 +532,14 @@ const getClusterScores = ({
         clusterId,
         ...cluster,
         score: clampScore(
-          Math.round(baseScore * 0.72 + categoryBoost + tagBoost + comboBoost + aspirationBoost - conflictPenalty)
+          Math.round(
+            baseScore * matchingModel.clusterScore.baseWeight +
+              categoryBoost +
+              tagBoost +
+              comboBoost +
+              aspirationBoost -
+              conflictPenalty
+          )
         )
       };
     })
@@ -493,6 +561,11 @@ export default function App() {
   const [skipSituational, setSkipSituational] = useState(false);
   const [answers, setAnswers] = useState({});
   const [selectedDirectionId, setSelectedDirectionId] = useState("");
+  const [analyticsSummary, setAnalyticsSummary] = useState(() => getAnonymousAnalyticsSummary());
+
+  const lastReadyRef = useRef(false);
+  const lastCompletedSignatureRef = useRef("");
+  const lastDirectionRef = useRef("");
 
   const normalizedSearch = search.trim().toLowerCase();
   const careersWithTags = useMemo(
@@ -563,7 +636,8 @@ export default function App() {
   const shouldBlendDiscoveryQuestions =
     Boolean(discoveryPrimaryCluster) &&
     Boolean(discoverySecondaryCluster) &&
-    Math.abs((discoveryPrimaryCluster?.score ?? 0) - (discoverySecondaryCluster?.score ?? 0)) <= 5;
+    Math.abs((discoveryPrimaryCluster?.score ?? 0) - (discoverySecondaryCluster?.score ?? 0)) <=
+      matchingModel.clusterScore.blendQuestionGap;
   const discoveryQuestionClusters = shouldBlendDiscoveryQuestions
     ? [discoveryPrimaryCluster, discoverySecondaryCluster]
     : discoveryPrimaryCluster
@@ -607,7 +681,12 @@ export default function App() {
   const primaryCluster = rankedClusters[0] ?? null;
   const recommendationClusters = rankedClusters.filter(
     (cluster, index) =>
-      index < 3 && cluster.score >= Math.max((rankedClusters[0]?.score ?? 0) - 6, 72)
+      index < 3 &&
+      cluster.score >=
+        Math.max(
+          (rankedClusters[0]?.score ?? 0) - matchingModel.clusterScore.recommendationClusterGap,
+          matchingModel.clusterScore.recommendationClusterFloor
+        )
   );
   const recommendationCareerSet = new Set(
     recommendationClusters.flatMap((cluster) => cluster.careers)
@@ -633,7 +712,10 @@ export default function App() {
           return sum;
         }
 
-        return sum + (index === 0 ? 6 : 3);
+        return sum +
+          (index === 0
+            ? matchingModel.clusterScore.primaryCareerBonus
+            : matchingModel.clusterScore.secondaryCareerBonus);
       }, 0);
 
       return { ...career, ...recommendation, score: clampScore(recommendation.score + clusterBonus) };
@@ -654,7 +736,10 @@ export default function App() {
           return sum;
         }
 
-        return sum + (index === 0 ? 6 : 3);
+        return sum +
+          (index === 0
+            ? matchingModel.clusterScore.primaryCareerBonus
+            : matchingModel.clusterScore.secondaryCareerBonus);
       }, 0);
 
       return { ...career, ...recommendation, score: clampScore(recommendation.score + clusterBonus) };
@@ -697,6 +782,9 @@ export default function App() {
       representativeCareers,
       fitSummary: getDirectionFitSummary(cluster.clusterId),
       caution: getDirectionCaution(cluster.clusterId),
+      stageFocus: getDirectionStageFocus(cluster.clusterId),
+      stageThisWeek: getDirectionStageThisWeek(cluster.clusterId),
+      stageThisMonth: getDirectionStageThisMonth(cluster.clusterId),
       nextTry:
         categoryPlan?.try ??
         representativeCareers[0]?.explore ??
@@ -765,6 +853,14 @@ export default function App() {
   });
 
   const resetDiscoveryFlow = () => {
+    trackAnonymousEvent("discovery_reset", {
+      selectedAgeGroup,
+      selectedWorkWith,
+      selectedAction,
+      careerDirection,
+      selectedDirectionId
+    });
+    setAnalyticsSummary(getAnonymousAnalyticsSummary());
     setSelectedAgeGroup("");
     setSelectedWorkWith("");
     setSelectedAction([]);
@@ -774,6 +870,80 @@ export default function App() {
     setAnswers({});
     setSelectedDirectionId("");
   };
+
+  useEffect(() => {
+    if (prerequisitesReady && !lastReadyRef.current) {
+      trackAnonymousEvent("discovery_ready", {
+        selectedAgeGroup,
+        selectedWorkWith,
+        selectedAction,
+        careerDirection,
+        matchedDesiredCareerTitle: matchedDesiredCareer?.title ?? null
+      });
+      setAnalyticsSummary(getAnonymousAnalyticsSummary());
+    }
+
+    lastReadyRef.current = prerequisitesReady;
+  }, [
+    careerDirection,
+    matchedDesiredCareer,
+    prerequisitesReady,
+    selectedAction,
+    selectedAgeGroup,
+    selectedWorkWith
+  ]);
+
+  useEffect(() => {
+    if (!quizComplete) {
+      return;
+    }
+
+    const completionPayload = {
+      selectedAgeGroup,
+      selectedWorkWith,
+      selectedAction,
+      careerDirection,
+      skippedSituational: !shouldAskSituational,
+      matchedDesiredCareerTitle: matchedDesiredCareer?.title ?? null,
+      topDirections: directionRecommendations.map((direction) => ({
+        clusterId: direction.clusterId,
+        label: direction.label,
+        score: direction.score
+      }))
+    };
+    const signature = JSON.stringify(completionPayload);
+
+    if (lastCompletedSignatureRef.current === signature) {
+      return;
+    }
+
+    lastCompletedSignatureRef.current = signature;
+    trackAnonymousEvent("discovery_completed", completionPayload);
+    setAnalyticsSummary(getAnonymousAnalyticsSummary());
+  }, [
+    careerDirection,
+    directionRecommendations,
+    matchedDesiredCareer,
+    quizComplete,
+    selectedAction,
+    selectedAgeGroup,
+    selectedWorkWith,
+    shouldAskSituational
+  ]);
+
+  useEffect(() => {
+    if (!selectedDirectionId || lastDirectionRef.current === selectedDirectionId) {
+      return;
+    }
+
+    lastDirectionRef.current = selectedDirectionId;
+    trackAnonymousEvent("direction_opened", {
+      selectedDirectionId,
+      directionLabel: activeDirection?.label ?? "",
+      focusedCareerTitles: focusedDirectionCareers.map((career) => career.title)
+    });
+    setAnalyticsSummary(getAnonymousAnalyticsSummary());
+  }, [activeDirection, focusedDirectionCareers, selectedDirectionId]);
 
   return (
     <main className="page-shell">
@@ -1111,15 +1281,15 @@ export default function App() {
                         <div className="age-plan-list">
                           <div className="age-plan-item">
                             <span>Focus</span>
-                            <p>{selectedAgePlan.focus}</p>
+                            <p>{direction.stageFocus}</p>
                           </div>
                           <div className="age-plan-item">
                             <span>This week</span>
-                            <p>{selectedAgePlan.thisWeek}</p>
+                            <p>{direction.stageThisWeek}</p>
                           </div>
                           <div className="age-plan-item">
                             <span>This month</span>
-                            <p>{selectedAgePlan.thisMonth}</p>
+                            <p>{direction.stageThisMonth}</p>
                           </div>
                         </div>
                       </div>
@@ -1213,6 +1383,41 @@ export default function App() {
                   先從上面的三條方向選一條深入看，下面才會出現那一類裡更具體的職業比較。
                 </div>
               )}
+
+              <div className="analytics-panel">
+                <div>
+                  <p className="eyebrow">Anonymous Learning Data</p>
+                  <h3>開始收集匿名使用資料</h3>
+                  <p className="results-note analytics-note">
+                    目前資料只存在這台裝置的瀏覽器裡，不包含姓名或聯絡方式。你可以先累積真實探索資料，再匯出 JSON 去看哪些題目、方向和職業推薦最常被點開或修正。
+                  </p>
+                </div>
+                <div className="analytics-meta">
+                  <p>Anonymous user ID: {analyticsSummary.anonymousUserId || "not ready yet"}</p>
+                  <p>Saved events: {analyticsSummary.eventCount}</p>
+                  <p>
+                    Last updated:{" "}
+                    {analyticsSummary.lastEventAt
+                      ? new Date(analyticsSummary.lastEventAt).toLocaleString()
+                      : "No events yet"}
+                  </p>
+                </div>
+                <div className="analytics-actions">
+                  <button onClick={exportAnonymousAnalytics} type="button">
+                    Export anonymous data
+                  </button>
+                  <button
+                    className="secondary-action"
+                    onClick={() => {
+                      clearAnonymousAnalytics();
+                      setAnalyticsSummary(getAnonymousAnalyticsSummary());
+                    }}
+                    type="button"
+                  >
+                    Clear local data
+                  </button>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="recommendation-placeholder">
