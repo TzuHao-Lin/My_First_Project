@@ -1105,16 +1105,6 @@ export default function App() {
                       <p>{direction.nextLearn}</p>
                     </div>
 
-                    <button
-                      className={selectedDirectionId === direction.clusterId ? "direction-button active" : "direction-button"}
-                      onClick={() => setSelectedDirectionId(direction.clusterId)}
-                      type="button"
-                    >
-                      {selectedDirectionId === direction.clusterId
-                        ? "正在深入看這條方向"
-                        : "深入看這條方向"}
-                    </button>
-
                     {selectedAgePlan && (
                       <div className="age-plan-box">
                         <p className="recommendation-label">{selectedAgePlan.title}</p>
@@ -1141,6 +1131,16 @@ export default function App() {
                         <p>{direction.caution}</p>
                       </div>
                     )}
+
+                    <button
+                      className={selectedDirectionId === direction.clusterId ? "direction-button active" : "direction-button"}
+                      onClick={() => setSelectedDirectionId(direction.clusterId)}
+                      type="button"
+                    >
+                      {selectedDirectionId === direction.clusterId
+                        ? "正在深入看這條方向"
+                        : "深入看這條方向"}
+                    </button>
                   </article>
                 ))}
               </div>
