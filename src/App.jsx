@@ -1072,8 +1072,8 @@ export default function App() {
                     </div>
 
                     <div>
-                      <h4>{direction.label}</h4>
-                      <p>{direction.description}</p>
+                      <h4 className="direction-title">{direction.label}</h4>
+                      <p className="direction-description">{direction.description}</p>
                     </div>
 
                     <div>

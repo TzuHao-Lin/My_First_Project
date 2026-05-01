@@ -414,6 +414,21 @@ h1 {
   margin-top: 6px;
 }
 
+.direction-title {
+  margin-top: 0 !important;
+  color: #10243f;
+  font-size: 1.35rem;
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.direction-description {
+  margin-top: 8px !important;
+  color: #40506a !important;
+  font-size: 0.98rem;
+  line-height: 1.65;
+}
+
 .recommendation-card p {
   color: #536070;
   line-height: 1.55;
