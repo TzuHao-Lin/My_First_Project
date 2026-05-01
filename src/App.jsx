@@ -442,6 +442,7 @@ export default function App() {
   const [desiredCareerInput, setDesiredCareerInput] = useState("");
   const [skipSituational, setSkipSituational] = useState(false);
   const [answers, setAnswers] = useState({});
+  const [selectedDirectionId, setSelectedDirectionId] = useState("");
 
   const normalizedSearch = search.trim().toLowerCase();
   const careersWithTags = useMemo(
@@ -634,6 +635,36 @@ export default function App() {
       (career) => !recommendedCareers.some((item) => item.title === career.title)
     )
   ].slice(0, 3);
+  const directionRecommendations = rankedClusters.slice(0, 3).map((cluster) => {
+    const representativeCareers = allScoredCareers
+      .filter((career) => cluster.careers.includes(career.title))
+      .slice(0, 3);
+    const firstCategory = cluster.categories[0];
+    const categoryPlan = actionPlans[firstCategory] ?? null;
+
+    return {
+      ...cluster,
+      representativeCareers,
+      nextTry:
+        categoryPlan?.try ??
+        representativeCareers[0]?.explore ??
+        "先從一個小型嘗試開始，確認自己對這條方向有沒有感覺。",
+      nextWatch:
+        categoryPlan?.watch ??
+        representativeCareers[0]?.explore ??
+        "先找一支真實從業者影片，看看你對這個世界有沒有興趣。",
+      nextLearn:
+        categoryPlan?.learn ??
+        representativeCareers[0]?.path ??
+        "先理解這條路最基本的能力要求。"
+    };
+  });
+  const activeDirection =
+    directionRecommendations.find((direction) => direction.clusterId === selectedDirectionId) ??
+    null;
+  const focusedDirectionCareers = activeDirection
+    ? allScoredCareers.filter((career) => activeDirection.careers.includes(career.title)).slice(0, 3)
+    : [];
 
   const filteredCareers = careersWithTags.filter((career) => {
     const matchesCategory =
@@ -689,6 +720,7 @@ export default function App() {
     setDesiredCareerInput("");
     setSkipSituational(false);
     setAnswers({});
+    setSelectedDirectionId("");
   };
 
   return (
@@ -967,8 +999,8 @@ export default function App() {
             <div className="recommendations">
               <div className="recommendations-header">
                 <div>
-                  <p className="eyebrow">Top Matches</p>
-                  <h3>Top 3 careers that may fit you</h3>
+                  <p className="eyebrow">Explore Directions</p>
+                  <h3>你現在最值得探索的 3 條方向</h3>
                   {primaryCluster && (
                     <p className="cluster-summary">
                       目前最像的職業群：{primaryCluster.label}
@@ -976,58 +1008,62 @@ export default function App() {
                   )}
                 </div>
                 <p className="results-note">
-                  系統已綜合你的年齡層、興趣、嚮往職業
-                  {shouldAskSituational ? " 和情境題答案" : ""}。
+                  系統不是直接替你決定答案，而是先整理出幾條合理的路，讓你知道接下來可以往哪裡試。
                 </p>
               </div>
               <div className="recommendation-grid">
-                {finalRecommendedCareers.map((career, index) => (
-                  <article className="recommendation-card" key={career.title}>
+                {directionRecommendations.map((direction, index) => (
+                  <article className="recommendation-card" key={direction.clusterId}>
                     <div className="recommendation-topline">
                       <p className="rank">#{index + 1}</p>
-                      <p className="score">{career.score}% match</p>
+                      <p className="score">{direction.score}% direction fit</p>
                     </div>
 
                     <div>
-                      <h4>{career.title}</h4>
-                      <p>{categoryLabels[career.category]}</p>
-                    </div>
-
-                    <div className="profile-facts compact">
-                      <span>{filterLabels[career.salary]}</span>
-                      <span>{filterLabels[career.educationLevel]}</span>
-                      <span>{filterLabels[career.workStyle]}</span>
+                      <h4>{direction.label}</h4>
+                      <p>{direction.description}</p>
                     </div>
 
                     <div>
-                      <p className="recommendation-label">Why this matches you</p>
+                      <p className="recommendation-label">Why this direction fits you</p>
                       <p>
-                        你的回答和這個職業在{" "}
-                        {career.closestDimensions
-                          .map((dimension) => dimensionLabels[dimension])
-                          .join("、")}{" "}
-                        這幾個面向最接近。
+                        你的回答目前最接近這個方向，代表你可能會對這一類的工作內容、節奏和能力要求有感。
                       </p>
                     </div>
 
                     <div>
-                      <p className="recommendation-label">適合你的特質</p>
+                      <p className="recommendation-label">Representative careers</p>
                       <div className="traits compact">
-                        {career.traits.map((trait) => (
-                          <span key={trait}>{trait}</span>
+                        {direction.representativeCareers.map((career) => (
+                          <span key={career.title}>{career.title}</span>
                         ))}
                       </div>
                     </div>
 
                     <div>
-                      <p className="recommendation-label">What may be hard for you</p>
-                      <p>{career.avoid}</p>
+                      <p className="recommendation-label">What to try this month</p>
+                      <p>{direction.nextTry}</p>
                     </div>
 
                     <div>
-                      <p className="recommendation-label">What to try this month</p>
-                      <p>{career.explore}</p>
+                      <p className="recommendation-label">What to watch first</p>
+                      <p>{direction.nextWatch}</p>
                     </div>
+
+                    <div>
+                      <p className="recommendation-label">What to learn first</p>
+                      <p>{direction.nextLearn}</p>
+                    </div>
+
+                    <button
+                      className={selectedDirectionId === direction.clusterId ? "secondary active" : "secondary"}
+                      onClick={() => setSelectedDirectionId(direction.clusterId)}
+                      type="button"
+                    >
+                      {selectedDirectionId === direction.clusterId
+                        ? "正在深入看這條方向"
+                        : "深入看這條方向"}
+                    </button>
 
                     {selectedAgePlan && (
                       <div className="age-plan-box">
@@ -1049,15 +1085,6 @@ export default function App() {
                       </div>
                     )}
 
-                    <div className="action-list">
-                      {Object.entries(actionPlans[career.category] ?? {}).map(([label, text]) => (
-                        <div className="action-item" key={label}>
-                          <span>{label}</span>
-                          <p>{text}</p>
-                        </div>
-                      ))}
-                    </div>
-
                     {selectedAgePlan && (
                       <div className="recommendation-caution">
                         <p className="recommendation-label">What not to rush</p>
@@ -1067,10 +1094,79 @@ export default function App() {
                   </article>
                 ))}
               </div>
+
+              {activeDirection ? (
+                <>
+                  <div className="recommendations-header">
+                    <div>
+                      <p className="eyebrow">Focused Careers</p>
+                      <h3>{activeDirection.label} 裡可以先看的 3 個職業</h3>
+                      <p className="cluster-summary">
+                        這一步不是要你立刻決定答案，而是讓你先在同一條方向裡比較不同可能。
+                      </p>
+                    </div>
+                  </div>
+                  <div className="recommendation-grid">
+                    {focusedDirectionCareers.map((career, index) => (
+                      <article className="recommendation-card" key={career.title}>
+                        <div className="recommendation-topline">
+                          <p className="rank">#{index + 1}</p>
+                          <p className="score">{career.score}% match</p>
+                        </div>
+
+                        <div>
+                          <h4>{career.title}</h4>
+                          <p>{categoryLabels[career.category]}</p>
+                        </div>
+
+                        <div className="profile-facts compact">
+                          <span>{filterLabels[career.salary]}</span>
+                          <span>{filterLabels[career.educationLevel]}</span>
+                          <span>{filterLabels[career.workStyle]}</span>
+                        </div>
+
+                        <div>
+                          <p className="recommendation-label">Why this matches you</p>
+                          <p>
+                            你的回答和這個職業在{" "}
+                            {career.closestDimensions
+                              .map((dimension) => dimensionLabels[dimension])
+                              .join("、")}{" "}
+                            這幾個面向最接近。
+                          </p>
+                        </div>
+
+                        <div>
+                          <p className="recommendation-label">適合你的特質</p>
+                          <div className="traits compact">
+                            {career.traits.map((trait) => (
+                              <span key={trait}>{trait}</span>
+                            ))}
+                          </div>
+                        </div>
+
+                        <div>
+                          <p className="recommendation-label">What may be hard for you</p>
+                          <p>{career.avoid}</p>
+                        </div>
+
+                        <div>
+                          <p className="recommendation-label">What to try this month</p>
+                          <p>{career.explore}</p>
+                        </div>
+                      </article>
+                    ))}
+                  </div>
+                </>
+              ) : (
+                <div className="recommendation-placeholder compact">
+                  先從上面的三條方向選一條深入看，下面才會出現那一類裡更具體的職業比較。
+                </div>
+              )}
             </div>
           ) : (
             <div className="recommendation-placeholder">
-              完成四層探索後，這裡會顯示你的 Top 3 推薦職業。如果你第三層已經很明確，也可以直接跳過第四層。
+              完成四層探索後，這裡會先顯示值得探索的方向，而不是直接只給你單一職業答案。
             </div>
           )}
         </section>
