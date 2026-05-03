@@ -1,7 +1,5 @@
-import { matchingModel } from "../data/matchingModel";
-
-const STORAGE_KEY = "career-explorer-anonymous-analytics";
 const USER_KEY = "career-explorer-anonymous-user-id";
+const API_BASE = import.meta.env.VITE_API_BASE_URL ?? "/api";
 
 const isBrowser = () => typeof window !== "undefined";
 
@@ -12,6 +10,12 @@ const createId = () => {
 
   return `anon-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
 };
+
+export const createEmptyAnalyticsSummary = () => ({
+  eventCount: 0,
+  anonymousUserId: "",
+  lastEventAt: null
+});
 
 export const getAnonymousUserId = () => {
   if (!isBrowser()) {
@@ -29,82 +33,74 @@ export const getAnonymousUserId = () => {
   return nextId;
 };
 
-export const readAnonymousAnalytics = () => {
+const normalizeSummary = (summary) => ({
+  eventCount: summary?.eventCount ?? 0,
+  anonymousUserId: getAnonymousUserId(),
+  lastEventAt: summary?.lastEventAt ?? null
+});
+
+export const getAnonymousAnalyticsSummary = async () => {
   if (!isBrowser()) {
-    return null;
-  }
-
-  const raw = window.localStorage.getItem(STORAGE_KEY);
-
-  if (!raw) {
-    return {
-      version: matchingModel.analytics.version,
-      anonymousUserId: getAnonymousUserId(),
-      events: []
-    };
+    return createEmptyAnalyticsSummary();
   }
 
   try {
-    return JSON.parse(raw);
+    const response = await fetch(`${API_BASE}/analytics/summary`);
+
+    if (!response.ok) {
+      return createEmptyAnalyticsSummary();
+    }
+
+    const payload = await response.json();
+    return normalizeSummary(payload);
   } catch {
-    return {
-      version: matchingModel.analytics.version,
-      anonymousUserId: getAnonymousUserId(),
-      events: []
-    };
+    return createEmptyAnalyticsSummary();
   }
 };
 
-export const getAnonymousAnalyticsSummary = () => {
-  const analytics = readAnonymousAnalytics();
-
-  if (!analytics) {
-    return {
-      eventCount: 0,
-      anonymousUserId: "",
-      lastEventAt: null
-    };
-  }
-
-  const lastEvent = analytics.events[analytics.events.length - 1] ?? null;
-
-  return {
-    eventCount: analytics.events.length,
-    anonymousUserId: analytics.anonymousUserId,
-    lastEventAt: lastEvent?.at ?? null
-  };
-};
-
-export const trackAnonymousEvent = (eventName, payload) => {
+export const trackAnonymousEvent = async (eventName, payload) => {
   if (!isBrowser()) {
-    return null;
+    return createEmptyAnalyticsSummary();
   }
 
-  const analytics = readAnonymousAnalytics();
-  const nextAnalytics = {
-    version: matchingModel.analytics.version,
-    anonymousUserId: analytics.anonymousUserId,
-    events: [
-      ...analytics.events,
-      {
+  try {
+    const response = await fetch(`${API_BASE}/analytics/events`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
         id: createId(),
         name: eventName,
         at: new Date().toISOString(),
+        anonymousUserId: getAnonymousUserId(),
         payload
-      }
-    ].slice(-matchingModel.analytics.maxEvents)
-  };
+      })
+    });
 
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(nextAnalytics));
-  return nextAnalytics;
+    if (!response.ok) {
+      return createEmptyAnalyticsSummary();
+    }
+
+    const result = await response.json();
+    return normalizeSummary(result.summary);
+  } catch {
+    return createEmptyAnalyticsSummary();
+  }
 };
 
-export const exportAnonymousAnalytics = () => {
+export const exportAnonymousAnalytics = async () => {
   if (!isBrowser()) {
     return;
   }
 
-  const analytics = readAnonymousAnalytics();
+  const response = await fetch(`${API_BASE}/analytics/export`);
+
+  if (!response.ok) {
+    return;
+  }
+
+  const analytics = await response.json();
   const blob = new Blob([JSON.stringify(analytics, null, 2)], {
     type: "application/json"
   });
@@ -117,10 +113,23 @@ export const exportAnonymousAnalytics = () => {
   window.URL.revokeObjectURL(url);
 };
 
-export const clearAnonymousAnalytics = () => {
+export const clearAnonymousAnalytics = async () => {
   if (!isBrowser()) {
-    return;
+    return createEmptyAnalyticsSummary();
   }
 
-  window.localStorage.removeItem(STORAGE_KEY);
+  try {
+    const response = await fetch(`${API_BASE}/analytics/events`, {
+      method: "DELETE"
+    });
+
+    if (!response.ok) {
+      return createEmptyAnalyticsSummary();
+    }
+
+    const result = await response.json();
+    return normalizeSummary(result.summary);
+  } catch {
+    return createEmptyAnalyticsSummary();
+  }
 };

@@ -197,7 +197,23 @@ career score 目前結構：
 
 ## Anonymous User Data Collection
 
-目前已經開始支援匿名資料收集，先存在瀏覽器 localStorage，之後可以匯出分析。
+目前已經開始支援匿名資料收集，前端會把匿名事件送到後端 API，資料存在伺服器端 JSON 檔，之後可以匯出分析。
+
+### 目前的後端架構
+
+- `server/server.mjs`：Node.js API server
+- `GET /api/health`：確認 server 是否正常
+- `GET /api/analytics/summary`：讀取匿名事件摘要
+- `GET /api/analytics/export`：匯出全部匿名事件
+- `POST /api/analytics/events`：新增匿名事件
+- `DELETE /api/analytics/events`：清空匿名事件
+
+開發時：
+
+- 前端：`npm run dev`
+- 後端：`npm run server`
+
+Vite 目前已經設定好 `/api` proxy 到 `http://localhost:8787`。
 
 ### 目前會收集什麼
 

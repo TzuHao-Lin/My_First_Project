@@ -12,6 +12,7 @@ import { filterOptions } from "./data/filterOptions";
 import { matchingModel } from "./data/matchingModel";
 import {
   clearAnonymousAnalytics,
+  createEmptyAnalyticsSummary,
   exportAnonymousAnalytics,
   getAnonymousAnalyticsSummary,
   trackAnonymousEvent
@@ -561,7 +562,7 @@ export default function App() {
   const [skipSituational, setSkipSituational] = useState(false);
   const [answers, setAnswers] = useState({});
   const [selectedDirectionId, setSelectedDirectionId] = useState("");
-  const [analyticsSummary, setAnalyticsSummary] = useState(() => getAnonymousAnalyticsSummary());
+  const [analyticsSummary, setAnalyticsSummary] = useState(createEmptyAnalyticsSummary);
 
   const lastReadyRef = useRef(false);
   const lastCompletedSignatureRef = useRef("");
@@ -853,14 +854,13 @@ export default function App() {
   });
 
   const resetDiscoveryFlow = () => {
-    trackAnonymousEvent("discovery_reset", {
+    void trackAnonymousEvent("discovery_reset", {
       selectedAgeGroup,
       selectedWorkWith,
       selectedAction,
       careerDirection,
       selectedDirectionId
-    });
-    setAnalyticsSummary(getAnonymousAnalyticsSummary());
+    }).then(setAnalyticsSummary);
     setSelectedAgeGroup("");
     setSelectedWorkWith("");
     setSelectedAction([]);
@@ -872,15 +872,18 @@ export default function App() {
   };
 
   useEffect(() => {
+    void getAnonymousAnalyticsSummary().then(setAnalyticsSummary);
+  }, []);
+
+  useEffect(() => {
     if (prerequisitesReady && !lastReadyRef.current) {
-      trackAnonymousEvent("discovery_ready", {
+      void trackAnonymousEvent("discovery_ready", {
         selectedAgeGroup,
         selectedWorkWith,
         selectedAction,
         careerDirection,
         matchedDesiredCareerTitle: matchedDesiredCareer?.title ?? null
-      });
-      setAnalyticsSummary(getAnonymousAnalyticsSummary());
+      }).then(setAnalyticsSummary);
     }
 
     lastReadyRef.current = prerequisitesReady;
@@ -918,8 +921,7 @@ export default function App() {
     }
 
     lastCompletedSignatureRef.current = signature;
-    trackAnonymousEvent("discovery_completed", completionPayload);
-    setAnalyticsSummary(getAnonymousAnalyticsSummary());
+    void trackAnonymousEvent("discovery_completed", completionPayload).then(setAnalyticsSummary);
   }, [
     careerDirection,
     directionRecommendations,
@@ -937,12 +939,11 @@ export default function App() {
     }
 
     lastDirectionRef.current = selectedDirectionId;
-    trackAnonymousEvent("direction_opened", {
+    void trackAnonymousEvent("direction_opened", {
       selectedDirectionId,
       directionLabel: activeDirection?.label ?? "",
       focusedCareerTitles: focusedDirectionCareers.map((career) => career.title)
-    });
-    setAnalyticsSummary(getAnonymousAnalyticsSummary());
+    }).then(setAnalyticsSummary);
   }, [activeDirection, focusedDirectionCareers, selectedDirectionId]);
 
   return (
@@ -1403,14 +1404,18 @@ export default function App() {
                   </p>
                 </div>
                 <div className="analytics-actions">
-                  <button onClick={exportAnonymousAnalytics} type="button">
+                  <button
+                    onClick={() => {
+                      void exportAnonymousAnalytics();
+                    }}
+                    type="button"
+                  >
                     Export anonymous data
                   </button>
                   <button
                     className="secondary-action"
                     onClick={() => {
-                      clearAnonymousAnalytics();
-                      setAnalyticsSummary(getAnonymousAnalyticsSummary());
+                      void clearAnonymousAnalytics().then(setAnalyticsSummary);
                     }}
                     type="button"
                   >
